@@ -1,0 +1,8 @@
+# temperity
+temperity is a application to check temperature and humidity with dht sensors
+
+#install
+download whole temperity folder and put inside the tests directory of riot-os
+then use below line to flash for ACM0 serial port,
+BOARD=nrf52840dk PORT=/dev/ttyACM0 make term flash
+
