@@ -1,0 +1,4 @@
+loadfile /home/zakilive/Desktop/riot-final/RIOT/examples/saul_temperature/bin/nrf52840dk/saul_example.elf
+r
+g
+exit
