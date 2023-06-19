@@ -1,3 +1,4 @@
+
 // Syed Ahmed Zaki - HIS Project-Group 4, Frankfurt University of Âpplied Science
 // This below code work with nrf2840dk boards pin P0.03(A0)
 // Some of the logic referred from riot os tests/dht
@@ -7,7 +8,7 @@
 #include "timex.h"
 #include "fmt.h"
 #include "dht.h"
-#include "dht_params.h"
+
 #include "clk.h"
 #include "board.h"
 #include "periph_conf.h"
@@ -15,6 +16,7 @@
 #include "ztimer.h"
 #include "periph/gpio.h"
 //all headers included
+
 #define DELAY           (2 * US_PER_SEC)
 
 int main(void)
@@ -24,6 +26,7 @@ int main(void)
     int16_t temp, hum;
 
     my_params.pin = GPIO_PIN(0,3);
+    my_params.type=DHT11;
 
     puts("DHT temperature and humidity sensor application\n");
 
