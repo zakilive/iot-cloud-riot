@@ -7,7 +7,7 @@
 static void _dht_func(void) {
 	static saul_reg_t *saul_dht;
 	static phydat_t result;
-	saul_dht = saul_reg_find_name("dht");
+	saul_dht = saul_reg_find_name("DHT11");
 
 	int res = saul_reg_read(saul_dht, &result);
 
