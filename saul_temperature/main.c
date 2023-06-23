@@ -2,19 +2,8 @@
 #include <saul.h>
 #include"saul_reg.h"
 
-int main(void) {
-    // int *dev = saul_init_devs();  // Initialize the SAUL module
-    //
-    // phydat_t result;  // Create a variable to store the sensor data
-    //
-    // int sensor_status = saul_read_notsup(dev, &result);  // Read data from the sensor
-    //
-    // if (sensor_status == 0) {
-    //     printf("Sensor data: %d\n", result.val[0]);  // Print the sensor data
-    // } else {
-    //     printf("Failed to read sensor data\n");
-    // }
 
+static void temp_saul(void) {
     int sensor_status;
 
    	saul_reg_t *dev = saul_reg_find_nth(8);
@@ -25,16 +14,15 @@ int main(void) {
     
     while(1) {
         if (sensor_status >= 0) {
-            printf("Sensor data: %d, %d\n", result.val[0], result.scale);  // Print the sensor data
+            printf("Sensor data: %d\n", result.val[0]/100);  // Print the sensor data from nRF52840 board
         } else {
             printf("Failed to read sensor data\n");
         }
     }
+}
 
-    
-
-
-//    return sensor_status;
+int main(void) {
+	temp_saul();
 
     return 0;
 }
