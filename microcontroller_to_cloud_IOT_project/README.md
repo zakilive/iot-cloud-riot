@@ -1,15 +1,15 @@
 
 # IoT-cloud-riot
-Author: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
+Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 
 # Architecture
-![image]()
+![image](Architecture.jpeg)
 
 # Demonstration 
-[Google Drive link to the video](architecture.jpeg)
+[Google Drive link to the video]()
 
 # Presentation 
-   Presentation on topic 'package'
+   Presentation on topic 'packages'
    [Google Slides link to presentation](https://docs.google.com/presentation/d/1hrXaewqivHxVyLq9jCytpMvTzpTxJ-yI_wwBTIthlHI/edit#slide=id.p)
    
   Final presentation
@@ -28,6 +28,12 @@ git clone https://github.com/RIOT-OS/RIOT.git
 ```
 
 ## Set up NRFDK52840 Board:
+
+
+
+## Establish a WireGuard VPN tunnel:
+
+
 
 ## Setup gnrc_border-router:
 
@@ -76,16 +82,18 @@ Follow the steps below to build and run the GNRC Border Router Example:
 
 ## Setup emcute_MQTT-SN:
 
+
+
 ## Setup EC2 instance with IPV6 address
 
-## Prerequisites
+### Prerequisites
 
 Before you begin, make sure you have the following:
 
 - An AWS account
 - AWS CLI installed and configured with appropriate permissions
 
-## Step 1: Create VPC with IPv6
+### Step 1: Create VPC with IPv6
 
 1. Go to the AWS Management Console.
 2. Navigate to the **VPC Dashboard**.
@@ -94,7 +102,7 @@ Before you begin, make sure you have the following:
 5. Configure other VPC settings as needed.
 6. Click on **Create VPC**.
 
-## Step 2: Configure Subnets and Internet Gateway
+### Step 2: Configure Subnets and Internet Gateway
 
 1. Go to the AWS Management Console.
 2. Navigate to the **VPC Dashboard**.
@@ -108,7 +116,7 @@ Before you begin, make sure you have the following:
 10. Attach the Internet Gateway to your VPC.
 11. Go to **Route Tables** and configure the route to the Internet Gateway for IPv6 traffic.
 
-## Step 3: Launch EC2 Instance with IPv6
+### Step 3: Launch EC2 Instance with IPv6
 
 1. Go to the AWS Management Console.
 2. Navigate to the **EC2 Dashboard**.
@@ -125,7 +133,7 @@ Before you begin, make sure you have the following:
 13. Wait until the instance is up and running and the click “Connect” and enter  the EC2 terminal
 14. Continue with [Execution of commands on EC2](#execution-of-commands-on-ec2)
 
-## Execution of commands on EC2
+### Execution of commands on EC2
 On EC2 Instance run the following commands:
 ``` bash
 #Update the list of repositories with one containing the latest version of #Mosquitto and update the package lists
@@ -138,7 +146,7 @@ sudo apt-get install mosquitto-clients
 sudo apt install awscli
 ```
 
-## Accessing the EC2 Instance
+### Accessing the EC2 Instance
 
  Use the key pair you selected during instance launch to SSH into the EC2 instance with its IPv6 address.
 
@@ -146,14 +154,11 @@ sudo apt install awscli
   ssh -i MQTT_BROKER.pemubuntu@2600:1f18:6929:5505:5ea4:f15c:41fb:1872
   ```
 
-
-
-
 ## Mosquitto RSMB (Really Small Message Broker) Broker:
 
 RSMB is a lightweight MQTT and MQTT-SN capable broker developed by Eclipse.
 
-## Building RSMB
+### Building RSMB
 
 To build RSMB, follow these steps:
 
@@ -163,10 +168,8 @@ To build RSMB, follow these steps:
    cd mosquitto.rsmb/rsmb/src
    ```
 
-2. Compile the code:
-   ``` bash
-   make
-3. Create a configuration file. Save the following to `RSMBconfig.conf\:
+
+2. Create a configuration file. Save the following to `RSMBconfig.conf\:
    ``` 
    # add some debug output
    trace_output protocol
@@ -179,7 +182,7 @@ To build RSMB, follow these steps:
 
    ```
 
-## Running RSMB
+### Running RSMB
 
 1. SSH into your EC2 instance:
    ``` bash
@@ -187,29 +190,40 @@ To build RSMB, follow these steps:
    ```
 2. Copy the RSMB executable and configuration file to your EC2 instance:
    ``` bash
-   scp -r -i MQTT_BROKER.pem RIOT-master ubuntu@2600:1f18:6929:5505:5ea4:f15c:41fb:1872:
+   scp -r/Downloads/RIOT-master/examples/emcute_mqttsn ubuntu@2600:1f18:6929:5505:5ea4:f15c:41fb:1872:
    ```
 
 3. Start the broker:
    ``` bash
    ./broker_mqtts RSMBconfig.conf
    ```
+ #### Some useful information
+ If some processes are already running on a specific port on the broker, then the below provided commands serve the purpose of checking for processes running on a specific port and then terminating a process running on that port if needed.
+ ```bash 
+ # Check for processes running on port 1886 and for the PID 
+sudo lsof -i :1886
+
+ # If you find a process running on port 1886 and it has a PID of 904, terminate it
+sudo kill 904  
+```
+
  ## Publisher script 
- 
+
+
 
 ## Grafana Installation with NGINX as a Reverse Proxy
 
 This repository provides step-by-step instructions for installing Grafana and configuring NGINX as a reverse proxy to access Grafana.
 
-## Prerequisites
+### Prerequisites
 
 Before you begin, ensure you have the following:
 
-- A Linux-based system (this guide uses Ubuntu).
+- A Linux-based system (this guide uses Ubuntu).Establish a WireGuard VPN tunnel EC2 IP address.
 - Administrative access to the server.
-- Domain name or public IP address pointing to the server.
+- Domain name or public IP address pointing to the server(this case)
 
-## Installation
+### Installation
 
 
  Step 1: Install Grafana
@@ -256,21 +270,21 @@ server {
 }
 ```
 
-## Enable the NGINX server block configuration
+### Enable the NGINX server block configuration
 ``` bash
 sudo ln -s /etc/nginx/sites-available/grafana.conf /etc/nginx/sites-enabled/
 ```
 
-## Test the NGINX configuration
+### Test the NGINX configuration
 ``` bash
 sudo nginx -t
 ```
 
-## If there are no errors, restart NGINX
+### If there are no errors, restart NGINX
 ``` bash
 sudo systemctl restart nginx
 ```
-## Access Grafana
+### Access Grafana
 
 Open a web browser and navigate to http://your_public_ip of EC2 instance: 3000. You should see the Grafana login page.
 
@@ -281,31 +295,62 @@ If everything is set up correctly, you should be able to access and use Grafana 
 
 
 
-# How everything works
+## How everything works
 In Order to send data from NRFDK52840 board  to the AWS cloud the 
-application consists of 7 different services. 
-1. Border-router
-2. NRFDK52840 board with driver to supply data
-3. Bridge to route MQTT messages from Sensor node  to AWS
-4. Mosquitto MQTT Broker on AWS
-5. Publisher script on EC2 instance
-6. EC2 Instance to receive data on AWS
-7. Grafana with nginx
+application consists of 9 different services. 
+1. Sensor Data Collection Using nRFDK52840 Board and DHT11 Sensors
+2. MQTT-SN execution
+3. Border-Router
+4. VPN WireGuard
+5. Mosquitto MQTT Broker on AWS
+6. Publisher script on EC2 instance 
+7.  SQLite Database
+8. Grafana with Nginx
+9. Using an IPv4 address to access a web browser
+
+### Sensor Data Collection Using nRFDK52840 Board and DHT11 Sensors:
+
+The nRF52840 DK board is running RIOT OS, and the SAUL registry is used to access and read data from the DHT11 sensors. The SAUL interface is used to collect temperature  data from the DHT11 sensors.
+
+### MQTT-SN execution:
+
+The nRFDK52840 board publishes the collected sensor data as MQTT-SN messages using the emcute MQTT-SN library. MQTT-SN is a sensor network protocol that is efficient and ideal for low-power sensors.
 
 ### Border-Router
 
-### NRFDK52840 board with driver to supply data
+Border Router with IPv6 Address: The Border Router serves as a link between the local IPv6-based sensor network and the external IPv6 network (the internet or cloud services). It enables communication between the nRF DK board, which functions on an IPv6 network, and the external network with IPv6 capability.
 
-### Bridge to route MQTT messages from Sensor node  to AWS
+### VPN WireGuard:
+
+Using WireGuard, the nRF DK board makes a safe and encrypted VPN connection with an AWS EC2 instance. WireGuard protects and secures data exchanged between the nRF DK board and the EC2 instance.
+
+### Instance of RSMB Broker in EC2:
+
+The RSMB (Really Small Message Broker) broker is hosted on the AWS EC2 instance, which serves as the primary message hub. Through the VPN connection, RSMB receives MQTT-SN messages from the nRF DK board.
+The broker processes and prepares the incoming data for storage.
+
+### MQTT Publisher Script:
+
+The MQTT publisher script, which runs on the EC2 instance, works as a MQTT client, subscribing to particular MQTT topics on the RSMB broker.
+When the RSMB broker receives MQTT-SN messages from the nRF DK board and converts them to MQTT messages, they are published to the appropriate MQTT topics. The MQTT publisher script monitors these MQTT topics and gets sensor data from the RSMB broker.
+When the sensor data is received, the script stores it in a SQLite database for further analysis and retrieval.
+
+### SQLite Database: 
+
+### Grafana with Nginx: 
+
+Grafana is installed on the EC2 instance in order to visualize sensor data saved in the SQLite database. Nginx serves as a reverse proxy, securely redirecting incoming requests to the Grafana web interface.
+
+### Using an IPv4 address to access a web browser:
+
+Users can access Grafana's web interface using their web browsers and the EC2 instance's public IPv4 address. The Grafana interface visualizes sensor data in real time, allowing for data analysis and decision-making.
 
 
-### Rsmb Broker in EC2 Instance
-
-### Publisher script on EC2 instance
-
-### EC2 Instance to receive data on AWS
 
 
-### Grafana with nginx
+
+
+
+
 
 
