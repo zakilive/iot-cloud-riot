@@ -37,7 +37,6 @@ static char stack[THREAD_STACKSIZE_DEFAULT];
 static msg_t queue[8];
 
 static emcute_sub_t subscriptions[NUMOFSUBS];
-//static char topics[NUMOFSUBS][TOPIC_MAXLEN];
 
 static void *emcute_thread(void *arg)
 {
@@ -47,23 +46,23 @@ static void *emcute_thread(void *arg)
 }
 
 // Function to connect to the broker
-static int connect(char *addr, int port)
+static int connect(char *address, int port)
 {
     sock_udp_ep_t gw = { .family = AF_INET6, .port = CONFIG_EMCUTE_DEFAULT_PORT };
     gw.port=port;
 
     /* parse address */
-    if (ipv6_addr_from_str((ipv6_addr_t *)&gw.addr.ipv6, addr) == NULL) {
+    if (ipv6_addr_from_str((ipv6_addr_t *)&gw.addr.ipv6, address) == NULL) {
         printf("error parsing IPv6 address\n");
         return 1;
     }
 
     if (emcute_con(&gw, true, NULL, NULL, 0, 0) != EMCUTE_OK) {
-        printf("error: unable to connect to [%s]:%i\n", addr, port);
+        printf("error: unable to connect to [%s]:%i\n", address, port);
         return 1;
     }
 
-    printf("Successfully connected to gateway at [%s]:%i\n", addr, port);
+    printf("Successfully connected to gateway at [%s]:%i\n", address, port);
 
     return 0;
 }
@@ -143,17 +142,16 @@ static int dht_func(void) {
 
 
 	while(1) {
-		int res = saul_reg_read(saul_dht, &result); //need to put it in while loop to get data sequencially
-		int temp_val = result.val[0]/10;
+		int res = saul_reg_read(saul_dht, &result); //need to put it in while loop to get data periodically
+		int temperature_value = result.val[0]/10;
 
 		if (res) {
-			if (temp_val > 23) { //if environment temperature is greater than 23 light will blink
+			if (temperature_value > 23) { //if environment temperature is greater than 23 LED red light will blink
 				print_led();
 			}
-			return temp_val;
+			return temperature_value;
 		}
-
-		ztimer_sleep(ZTIMER_USEC, 5); //need timer for delay
+		ztimer_sleep(ZTIMER_USEC, 5); //need this delay for correct data from sensor
 	}
 	return 0;
 }
@@ -165,42 +163,38 @@ static int start_func(int argc, char **argv){
       return 1;
   }
 
-    //topic that will publich
+    // topic that will publish
     char topic[32];
     sprintf(topic,"sensor/temperature");
-    //topic="sensor/temperature";
 
-    //json that will published
-    char json[128];
+    // message that will publish
+    char message[32];
 
-
-    //int temperature = 5;
-
-
-    // it tries to connect to the gateway
+    // it connect to the gateway
     if (connect(argv[1], atoi(argv[2]))) {
-    //continue;
-
-        //printf("value from dht: %d/n",temperature);
+	// need to keep it for arguments from commandline
     }
-
-    while(1) {
+    
+    int counter = 0;
+    while(counter<5) { // 5 times this loop will publish temperature
         int temperature = dht_func();
         
+        // temperature value to send
+        sprintf(message, "temperature:%d",temperature);
 
-        //temperature value to send
-        sprintf(json, "temperature:%d",temperature);
-
-        //publsh the topic and the message with QoS=0
-        publish(topic, json, 0);
+        // publsh the topic and the message with QoS=0
+        publish(topic, message, 0);
+        
+        // delay of 5 seconds to get data
+	ztimer_sleep(ZTIMER_SEC, 5);
+	
+	//total 5 iteration of sending data
+	counter++;
     }
 
-    //disconnect from gateway
-    disconnect();
-
-    //ztimer
-    ztimer_sleep(ZTIMER_SEC, 5);
-
+    	//disconnect from gateway after 5 times data send
+	disconnect();
+	
     return 0;
 }
 
@@ -211,7 +205,7 @@ static const shell_command_t shell_commands[] = {
 
 int main(void)
 {
-    puts("Application for Temperature with DHT11, MQTT-SN and AWS\n");
+    puts("Application for Temperature Monitoring with MQTT-SN and AWS\n");
     puts("Type 'help' to get help with usage");
 
     /* the main thread needs a msg queue to be able to run `ping`*/
