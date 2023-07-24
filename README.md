@@ -46,10 +46,10 @@ git clone https://github.com/RIOT-OS/RIOT.git
 
 
 ## Establish a WireGuard VPN tunnel:
-1. Go to the show application tab in ubuntu and search for advanced network connections
-2. Create the icon to make a new connection and give 'wireguard' as connection type from virtual section
+1. Go to the show application tab in ubuntu and search for advanced network connections.
+2. Create the icon to make a new connection and give 'wireguard' as connection type from virtual section.
 3. Add the private key and other IPV6 configuration details provided and save it 
-4. Activate the connection using 
+4. Activate the connection using: 
    ``` bash 
     nmtui
    ```   
@@ -296,7 +296,7 @@ Step 3: Install NGINX
 sudo apt-get install -y nginx
 ```
 Step 4: Configure NGINX as a Reverse Proxy for Grafana
-Create a new NGINX server block configuration file ( grafana.conf) using a text editor
+Create a new NGINX server block configuration file ( grafana.conf) using a text editor.
 ``` bash
 sudo nano /etc/nginx/sites-available/grafana.conf
 ```
