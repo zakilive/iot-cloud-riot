@@ -48,7 +48,7 @@ git clone https://github.com/RIOT-OS/RIOT.git
 ## Establish a WireGuard VPN tunnel:
 1. Go to the show application tab in ubuntu and search for advanced network connections.
 2. Create the icon to make a new connection and give 'wireguard' as connection type from virtual section.
-3. Add the private key and other IPV6 configuration details provided and save it 
+3. Add the private key and other IPV6 configuration details provided and save it. 
 4. Activate the connection using: 
    ``` bash 
     nmtui
@@ -153,19 +153,19 @@ Before you begin, make sure you have the following:
 12. Click **Launch Instances**.[Creating new keypair](#creation-of-new-key-pair)
 13. Wait until the instance is up and running and the click “Connect” and enter  the EC2 terminal
 14. Continue with [Execution of commands on EC2](#execution-of-commands-on-ec2)
-###creating  security groups
+
 
 ###creating new keypair(.pemfile)
-16. Create Key Pair:
+1. Create Key Pair:
 Click on the "Create Key Pair" button at the top of the Key Pairs page.
 
-17. Enter Key Pair Name:
+2. Enter Key Pair Name:
 In the "Create Key Pair" dialog, provide a unique name for your key pair (e.g. our case MQTT_BROKER.pem) and select the file format as ".pem". Then click "Create Key Pair".
 
-18. Save .pem File:
+3. Save .pem File:
 After clicking "Create Key Pair", the .pem file will be automatically downloaded to your local machine. Save it in a secure location on your computer.
 
-19. Set Appropriate Permissions (Optional):
+4. Set Appropriate Permissions (Optional):
 For security reasons, you might want to set the appropriate permissions for the .pem file. In the terminal or command prompt, run the following command:
 
     ```bash
