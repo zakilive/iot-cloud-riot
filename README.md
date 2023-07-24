@@ -15,10 +15,21 @@ Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
   Final presentation
   [Google Slides link to presentation](https://docs.google.com/presentation/d/1bdDMfEQ3tYdK1lGkH5KHnMsGwzbkqkJ0AcXlb6eBV8A/edit#slide=id.g2593bad232c_1_0)
 
-# Steps to replicate:
-1.
-2.
-3.
+## Steps to replicate:
+1. Broker need to run in AWS
+2. Start subscribe client in AWS ->
+```python3 pub_client_with_sql.py```
+3. start software from nrf52840dk board
+4. start gnrc border router software from dongle which is flashed already
+5. start grafana server(hyperlink-below)
+6. login to grafana and refresh to see the updates of fresh temperature saved in the database
+
+So after clone/download the whole repository
+go to `microcontroller_to_cloud_IOT_project` and copy `temperature_mqttsn` to riot example folder then get inside the folder and flash it with nrf52840dk board
+
+User case scenario for running the application:
+1: `start 2600:1f18:6929:5505:5ea4:f15c:41fb:1872 1885`
+Send 5 periodic data to from sensor node to AWS EC2 instance
 
 
 # Scripts
@@ -84,6 +95,7 @@ Follow the steps below to build and run the GNRC Border Router Example:
    
 
 ## Setup emcute_MQTT-SN:
+
 
 
 
@@ -210,8 +222,16 @@ sudo lsof -i :1886
 sudo kill 904  
 ```
 
- ## Publisher script 
+## Elastic IP Creation:
 
+Each time login to the EC2 instance IP got changes, so changed the IP to Elastic IP/Fixed IPV4 which does not change even after closing the instance.
+Here is the grafana server login for our project: http://54.175.129.183:3000
+
+
+### Regarding the Subscriber Client
+  1. It save data in the database
+  2. Also show updates of saving from terminal
+  3. Show temperature got from broker in real time
 
 
 ## Grafana Installation with NGINX as a Reverse Proxy
@@ -298,6 +318,18 @@ If everything is set up correctly, you should be able to access and use Grafana 
 
 
 
+## Setup grafana Dashboard
+-> inside grafana -> bar chart, histogram  and table both shows good temperature.
+````
+SELECT
+  datetime AS "time",
+  temperature
+FROM
+  TemperatureReadings.Readings
+LIMIT
+  50
+ ````
+
 ## How everything works
 In Order to send data from NRFDK52840 board  to the AWS cloud the 
 application consists of 9 different services. 
@@ -338,22 +370,48 @@ The MQTT publisher script, which runs on the EC2 instance, works as a MQTT clien
 When the RSMB broker receives MQTT-SN messages from the nRF DK board and converts them to MQTT messages, they are published to the appropriate MQTT topics. The MQTT publisher script monitors these MQTT topics and gets sensor data from the RSMB broker.
 When the sensor data is received, the script stores it in a SQLite database for further analysis and retrieval.
 
-### SQLite Database: 
+## MySQL Database Creation:
+Install MySQL
+Login to mysql after install:
+sudo mysql
+username: root
+password: admin
+mysql> `mysql -u root -p`
+
+````
+CREATE DATABASE `TemperatureReadings`;
+USE TemperatureReadings;
+CREATE TABLE `Readings` (
+  `datetime` datetime NOT NULL,
+  `temperature` int DEFAULT NULL,
+  PRIMARY KEY (`datetime`)
+)
+````
+For friendly database handling we can use also *phpmyadmin*, which is web based management platform.
+Install phpmyadmin:http://54.175.129.183:8080/phpmyadmin
+Setup with apache->port 8080->make aws security group rules
+after login there you can see the table for temperature on different times
 
 ### Grafana with Nginx: 
 
-Grafana is installed on the EC2 instance in order to visualize sensor data saved in the SQLite database. Nginx serves as a reverse proxy, securely redirecting incoming requests to the Grafana web interface.
+Grafana is installed on the EC2 instance in order to visualize sensor data saved in the MySQL database. Nginx serves as a reverse proxy, securely redirecting incoming requests to the Grafana web interface.
 
 ### Using an IPv4 address to access a web browser:
 
 Users can access Grafana's web interface using their web browsers and the EC2 instance's public IPv4 address. The Grafana interface visualizes sensor data in real time, allowing for data analysis and decision-making.
 
 
+## Troubleshoots while Replicate:
+**if broker connection lost :**
+2023-07-24 02:15:49,752 # error: unable to disconnect
+2023-07-23 18:31:11,970 # error: unable to obtain topic ID
+- Some internet provider close packet forwarding with router
+- AWS learner lab close in 5-10 minutes duration so need to restart it
 
+**For SCP in IPV6:**
 
+from ec2 to local:
+`scp -i MQTT_BROKER.pem ubuntu@[aws_ec2_ipv6]:/home/ubuntu/pub_client_with_sql.py ~/Downloads/`
 
-
-
-
-
-
+from local to ec2:
+`scp -i MQTT_BROKER.pem ~/Downloads/ ubuntu@[aws_ec2_ipv6]:/home/ubuntu/pub_client_with_sql.py`
