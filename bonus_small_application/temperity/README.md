@@ -1,5 +1,5 @@
 # temperity
-temperity is a application to check temperature and humidity with dht sensors
+temperity is a RIOT application to check temperature and humidity with dht sensors
 
 #install
 download whole temperity folder and put inside the tests directory of riot-os

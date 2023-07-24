@@ -1,5 +1,5 @@
 # temperity
-it is a application to check temperature with dht sensors with SAUL and give actions with led light
+it is a RIOT application to check temperature with dht sensors with SAUL and give actions with led light
 
 #install
 download whole temperity folder and put inside the tests directory of riot-os
