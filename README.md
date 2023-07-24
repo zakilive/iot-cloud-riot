@@ -155,7 +155,7 @@ Before you begin, make sure you have the following:
 14. Continue with [Execution of commands on EC2](#execution-of-commands-on-ec2)
 
 
-###creating new keypair(.pemfile)
+### creating new keypair(.pemfile)
 1. Create Key Pair:
 Click on the "Create Key Pair" button at the top of the Key Pairs page.
 
