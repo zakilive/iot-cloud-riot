@@ -67,6 +67,7 @@ static int connect(char *address, int port)
     return 0;
 }
 
+
 // Function to disconnect from MQTT-SN gateway
 static int disconnect(void)
 {
