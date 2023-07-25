@@ -13,8 +13,6 @@
 #include "saul_reg.h"
 #include "saul.h"
 
-#include <time.h>
-#include "time_units.h"
 #include "ztimer.h"
 
 #include "periph/gpio.h"
@@ -26,12 +24,11 @@
 //Using emcute_mqttsn package
 //ref: https://github.com/RIOT-OS/RIOT/tree/master/examples/emcute_mqttsn
 #ifndef EMCUTE_ID
-#define EMCUTE_ID           ("gertrud")
+#define EMCUTE_ID           ("sensor_Node_nrf52840dk")
 #endif
 #define EMCUTE_PRIO         (THREAD_PRIORITY_MAIN - 1)
 
 #define NUMOFSUBS           (16U)
-#define TOPIC_MAXLEN        (64U)
 
 static char stack[THREAD_STACKSIZE_DEFAULT];
 static msg_t queue[8];
@@ -42,6 +39,7 @@ static void *emcute_thread(void *arg)
 {
     (void)arg;
     emcute_run(CONFIG_EMCUTE_DEFAULT_PORT, EMCUTE_ID);
+
     return NULL;    /* should never be reached */
 }
 
@@ -67,7 +65,6 @@ static int connect(char *address, int port)
     return 0;
 }
 
-
 // Function to disconnect from MQTT-SN gateway
 static int disconnect(void)
 {
@@ -81,7 +78,9 @@ static int disconnect(void)
         puts("error: unable to disconnect");
         return 1;
     }
+
     puts("Disconnect successful");
+
     return 0;
 }
 
@@ -89,19 +88,13 @@ static int disconnect(void)
 static int publish(char* topic, char *data, int qos)
 {
     emcute_topic_t t;
-    unsigned flags = EMCUTE_QOS_0;
 
-    /* parse QoS level */
-    switch (qos) {
-        case 1:
-            flags |= EMCUTE_QOS_1;
-            break;
-        case 2:
-            flags |= EMCUTE_QOS_2;
-            break;
-        default:
+    unsigned flags = 0;
+
+    //Get QoS value=0 and always true
+    if (qos) {
+            //flags parse only for QoS 0
             flags |= EMCUTE_QOS_0;
-            break;
     }
 
     /* step 1: get topic id */
@@ -140,43 +133,43 @@ static int dht_func(void) {
 	static phydat_t result;
 	saul_dht = saul_reg_find_name("dht");
 
-
-
 	while(1) {
-		int res = saul_reg_read(saul_dht, &result); //need to put it in while loop to get data periodically
+		int res = saul_reg_read(saul_dht, &result); // need to put it in while loop to get data periodically
 		int temperature_value = result.val[0]/10;
 
 		if (res) {
-			if (temperature_value > 23) { //if environment temperature is greater than 23 LED red light will blink
+			if (temperature_value > 23) { // if environment temperature is greater than 23 LED light will blink
 				print_led();
 			}
 			return temperature_value;
 		}
-		ztimer_sleep(ZTIMER_USEC, 5); //need this delay for correct data from sensor
+		ztimer_sleep(ZTIMER_USEC, 5); // need this delay for correct data from sensor
 	}
+
 	return 0;
 }
 
 // Start function of the application
 static int start_func(int argc, char **argv){
-  if (argc < 3) {
-      printf("usage:start <address> <port> \n");
-      return 1;
-  }
+    if (argc < 3) {
+        printf("usage:start <address> <port> \n");
+        return 1;
+    }
 
-    // topic that will publish
+    // It connects to the MQTT-SN gateway
+    if (connect(argv[1], atoi(argv[2]))) {
+        // need to keep it for arguments from commandline
+    }
+
+    // MQTT topic that will publish
     char topic[32];
     sprintf(topic,"sensor/temperature");
 
-    // message that will publish
+    // message that will publish and includes temperature
     char message[32];
-
-    // it connect to the gateway
-    if (connect(argv[1], atoi(argv[2]))) {
-	// need to keep it for arguments from commandline
-    }
     
     int counter = 0;
+
     while(counter<5) { // 5 times this loop will publish temperature
         int temperature = dht_func();
         
@@ -187,13 +180,13 @@ static int start_func(int argc, char **argv){
         publish(topic, message, 0);
         
         // delay of 5 seconds to get data
-	ztimer_sleep(ZTIMER_SEC, 5);
+        ztimer_sleep(ZTIMER_SEC, 5);
 	
-	//total 5 iteration of sending data
-	counter++;
+        // total 5 iteration of sending data
+        counter++;
     }
 
-    	//disconnect from gateway after 5 times data send
+    // disconnect from gateway after 5 times data send
 	disconnect();
 	
     return 0;

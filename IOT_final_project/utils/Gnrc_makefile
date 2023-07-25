@@ -3,7 +3,7 @@ APPLICATION = gnrc_border_router
 
 # If no BOARD is found in the environment, use this default:
 BOARD ?= native
-DEFAULT_CHANNEL := 29  # changed default channel to 29
+DEFAULT_CHANNEL := 23  # changed default channel to 23
 
 # This has to be the absolute path to the RIOT base directory:
 RIOTBASE ?= $(CURDIR)/../..
