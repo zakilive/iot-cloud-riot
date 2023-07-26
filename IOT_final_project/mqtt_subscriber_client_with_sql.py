@@ -1,6 +1,8 @@
 import paho.mqtt.client as mqtt
 import mysql.connector
 
+client_id = "subscriber_client_with_sql"
+
 # MQTT broker details
 broker_address = "2600:1f18:6929:5505:5ea4:f15c:41fb:1872"
 broker_port = 1886
@@ -12,13 +14,13 @@ db_user = "root"
 db_password = "admin"
 db_name = "TemperatureReadings"
 
-# Callback function for when a connection is established with the MQTT broker
+# Function when a connection is established with the MQTT broker
 def on_connect(client, userdata, flags, rc):
     print("Connected to MQTT broker")
     # Subscribe to the topic upon successful connection
     client.subscribe(topic)
 
-# Callback function for when a message is received
+# Function when a message is received
 def on_message(client, userdata, message):
     print("Received message: " + str(message.payload.decode()))
 
@@ -35,8 +37,9 @@ def on_message(client, userdata, message):
 
         # Extract the temperature value from the received message
         payload = str(message.payload.decode())
-        temperature_str = payload.split(":")[1].strip()  # Extract the numeric part after the colon
-        temperature = float(temperature_str)
+
+        # Extract the numeric part after the colon
+        temperature = payload.split(":")[1].strip()
 
         # Prepare the SQL query to insert the temperature reading
         insert_query = "INSERT INTO `Readings` (`datetime`, `temperature`) VALUES (NOW(), %s)"
@@ -60,7 +63,7 @@ def on_message(client, userdata, message):
             connection.close()
 
 # Create MQTT client instance
-client = mqtt.Client()
+client = mqtt.Client(client_id=client_id, clean_session=True)
 
 # Set callback functions
 client.on_connect = on_connect
