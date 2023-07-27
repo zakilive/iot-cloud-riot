@@ -24,18 +24,20 @@ Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 5. start grafana server(hyperlink-below)
 6. login to grafana and refresh to see the updates of fresh temperature saved in the database
 
-So after clone/download the whole repository
+So first clone RIOT OS Repository(see below) and after clone/download the whole project repository using
+```bash
+git clone https://github.com/zakilive/iot-cloud-riot.git
+```
 go to `IOT_final_project` and copy `temperature_mqttsn` to riot example folder then get inside the folder and flash it with nrf52840dk board
 
 User case scenario for running the application:
-1: `start 2600:1f18:6929:5505:5ea4:f15c:41fb:1872 1885`
-Send 5 periodic data to from sensor node to AWS EC2 instance
-
+`start 2600:1f18:6929:5505:5ea4:f15c:41fb:1872 1885`
+Send 5 periodic data to from sensor node to AWS EC2 instance , LED light will also blin 5 times
 
 # Scripts
 
 
-### Clone the Repository
+### Clone RIOT OS Repository
 
 ```bash
 git clone https://github.com/RIOT-OS/RIOT.git
