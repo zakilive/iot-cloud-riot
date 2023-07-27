@@ -9,10 +9,10 @@ Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 [Google Drive link to the video]()
 
 # Presentation 
-   Presentation on topic 'packages'
+   Midterm Presentation on topic 'packages'(Use Chrome for best view):
    [Google Slides link to presentation](https://docs.google.com/presentation/d/1hrXaewqivHxVyLq9jCytpMvTzpTxJ-yI_wwBTIthlHI/edit#slide=id.p)
    
-  Final presentation
+  Final presentation(Use Chrome for best view):
   [Google Slides link to presentation](https://docs.google.com/presentation/d/1bdDMfEQ3tYdK1lGkH5KHnMsGwzbkqkJ0AcXlb6eBV8A/edit#slide=id.g2593bad232c_1_0)
 
 ## Steps to replicate:
@@ -41,7 +41,21 @@ Send 5 periodic data to from sensor node to AWS EC2 instance
 git clone https://github.com/RIOT-OS/RIOT.git
 ```
 
-## Set up NRFDK52840 Board:
+## Set up NRFDK52840 Board(Sensor Node):
+Move to this directory in riot os examples/temperature_mqttsn folder, click
+
+> Open in Terminal
+
+or from terminal directly put this command below:
+`PORT=/dev/ttyACM1 BOARD=nrf52840dk make term flash PROGRAMMER=openocd`
+
+Here openocd is needful when normal flash does not work
+For normal flash:
+`PORT=/dev/ttyACM1 BOARD=nrf52840dk make term flash`
+
+It works as sensor node, so we start the application from here using:
+`start 2600:1f18:6929:5505:5ea4:f15c:41fb:1872 1885`
+Where `start aws_ipv6 broker_port`
 
 
 
@@ -96,13 +110,6 @@ Follow the steps below to build and run the GNRC Border Router Example:
     ``` bash
     PORT=/dev/ttyACM3 IPV6_PREFIX=2001:470:7347:c401::/64 BOARD=nrf52840dongle make term flash 
    ```
-   
-   
-   
-
-## Setup emcute_MQTT-SN:
-
-
 
 
 ## Setup EC2 instance with IPV6 address
@@ -232,7 +239,6 @@ To build RSMB, follow these steps:
    ``` bash
    scp -r /Downloads/RIOT-master/examples/emcute_mqttsn ubuntu@2600:1f18:6929:5505:5ea4:f15c:41fb:1872:
    ```
-
 3. Start the broker:
    ``` bash
    ./broker_mqtts RSMBconfig.conf
@@ -258,6 +264,37 @@ Here is the grafana server login for our project: http://54.175.129.183:3000
   2. Also show updates of saving from terminal
   3. Show temperature got from broker in real time
 
+## MySQL Database Creation:
+Install MySQL
+Login to mysql after install:
+sudo mysql
+username: root
+password: admin
+mysql> `mysql -u root -p`
+
+````
+CREATE DATABASE `TemperatureReadings`;
+USE TemperatureReadings;
+CREATE TABLE `Readings` (
+  `datetime` datetime NOT NULL,
+  `temperature` int DEFAULT NULL,
+  PRIMARY KEY (`datetime`)
+)
+````
+For friendly database handling we can use also *phpmyadmin*, which is web based management platform.
+Install phpmyadmin:http://54.175.129.183:8080/phpmyadmin
+Setup with apache->port 8080->make aws security group rules
+after login there you can see the table for temperature on different times
+
+## Troubleshoots for database timezone:
+Grafana time is showing 2 hours more than what saved in the database, this issue can be ignored. We changed the timezone to Europe but still this issue exists.
+
+This steps can be followed to set to another timezone.
+Set to Berlin timezone:
+mysql -u your_username -p
+SET GLOBAL time_zone = '+02:00';
+SELECT @@global.time_zone;
+ exit or pressing Ctrl + D
 
 ## Grafana Installation with NGINX as a Reverse Proxy
 
@@ -272,7 +309,6 @@ Before you begin, ensure you have the following:
 - Domain name or public IP address pointing to the server(this case)
 
 ### Installation
-
 
  Step 1: Install Grafana
 ``` bash
@@ -341,10 +377,21 @@ Open a web browser and navigate to http://your_public_ip of EC2 instance: 3000. 
 
 If everything is set up correctly, you should be able to access and use Grafana through the NGINX reverse proxy.
 
-
+For our project grafana login, user: admin, pass: root123
 
 ## Setup grafana Dashboard
--> inside grafana -> bar chart, histogram  and table both shows good temperature.
+1. Add plus icon-> click "New dashboard"-> Add visualization .> Click MYSQL-TemperatureReadings(It shows after connection to mysql successful) database as Data source
+2. On dataset TemperatureReadings -> Table -> Select "Readings"
+-> inside grafana -> bar chart, histogram  and table both shows good temperature graf
+
+Some steps:
+Column -> datetime
+Column -> temperature
+Click Run query
+Click on Zoom data and interval
+Click on Refresh button to update database
+
+This manual query can be considered if any issues while setup where datetime mentioned as time to understand by grafana it as time series
 ````
 SELECT
   datetime AS "time",
@@ -354,6 +401,7 @@ FROM
 LIMIT
   50
  ````
+In the current graf Hair dryer and ice helped to show the graf to increase and decrease temperature alongside as well as normal temperature.
 
 ## How everything works
 In Order to send data from NRFDK52840 board  to the AWS cloud the 
@@ -395,28 +443,6 @@ The MQTT publisher script, which runs on the EC2 instance, works as a MQTT clien
 When the RSMB broker receives MQTT-SN messages from the nRF DK board and converts them to MQTT messages, they are published to the appropriate MQTT topics. The MQTT publisher script monitors these MQTT topics and gets sensor data from the RSMB broker.
 When the sensor data is received, the script stores it in a SQLite database for further analysis and retrieval.
 
-## MySQL Database Creation:
-Install MySQL
-Login to mysql after install:
-sudo mysql
-username: root
-password: admin
-mysql> `mysql -u root -p`
-
-````
-CREATE DATABASE `TemperatureReadings`;
-USE TemperatureReadings;
-CREATE TABLE `Readings` (
-  `datetime` datetime NOT NULL,
-  `temperature` int DEFAULT NULL,
-  PRIMARY KEY (`datetime`)
-)
-````
-For friendly database handling we can use also *phpmyadmin*, which is web based management platform.
-Install phpmyadmin:http://54.175.129.183:8080/phpmyadmin
-Setup with apache->port 8080->make aws security group rules
-after login there you can see the table for temperature on different times
-
 ### Grafana with Nginx: 
 
 Grafana is installed on the EC2 instance in order to visualize sensor data saved in the MySQL database. Nginx serves as a reverse proxy, securely redirecting incoming requests to the Grafana web interface.
@@ -439,5 +465,5 @@ from ec2 to local:
 `scp -i MQTT_BROKER.pem ubuntu@[aws_ec2_ipv6]:/home/ubuntu/pub_client_with_sql.py ~/Downloads/`
 
 from local to ec2:
-`scp -i MQTT_BROKER.pem ~/Downloads/ ubuntu@[aws_ec2_ipv6]:/home/ubuntu/pub_client_with_sql.py`
+`scp -i MQTT_BROKER.pem ~/Downloads/ ubuntu@[aws_ec2_ipv6]:/home/ubuntu/`
 
