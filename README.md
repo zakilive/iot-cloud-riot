@@ -25,7 +25,7 @@ Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 6. login to grafana and refresh to see the updates of fresh temperature saved in the database
 
 So after clone/download the whole repository
-go to `microcontroller_to_cloud_IOT_project` and copy `temperature_mqttsn` to riot example folder then get inside the folder and flash it with nrf52840dk board
+go to `IOT_final_project` and copy `temperature_mqttsn` to riot example folder then get inside the folder and flash it with nrf52840dk board
 
 User case scenario for running the application:
 1: `start 2600:1f18:6929:5505:5ea4:f15c:41fb:1872 1885`
@@ -54,7 +54,6 @@ For normal flash:
 `PORT=/dev/ttyACM1 BOARD=nrf52840dk make term flash`
 
 It works as sensor node, so we start the application from here using:
-`start 2600:1f18:6929:5505:5ea4:f15c:41fb:1872 1885`
 Where `start aws_ipv6 broker_port`
 
 
@@ -291,10 +290,10 @@ Grafana time is showing 2 hours more than what saved in the database, this issue
 
 This steps can be followed to set to another timezone.
 Set to Berlin timezone:
-mysql -u your_username -p
+`mysql -u your_username -p
 SET GLOBAL time_zone = '+02:00';
 SELECT @@global.time_zone;
- exit or pressing Ctrl + D
+ exit or pressing Ctrl + D`
 
 ## Grafana Installation with NGINX as a Reverse Proxy
 
