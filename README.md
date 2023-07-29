@@ -1,23 +1,29 @@
-
 # IoT: From Microcontroller to Cloud with Riot OS
 Summer Semester 2023; Master of Science; Frankfurt University of Applied Sciences, Germany
 
 Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 
-# Project Architecture
-![image](Architecture.jpeg)
-
-# Demonstration 
+# Demonstration
 [Google Drive link to the video]()
 
-# Presentation 
+# Screenshots
+<img src="project_screenshots/gnrc_border_router.png" alt="gnrc_border_router" width="500"/>
+<img src="project_screenshots/mqtt-sn_broker_ec2.png" alt="mqtt-sn_broker_ec2" width="500"/>
+<img src="project_screenshots/sensor_ to_broker_with_sql.png" alt="sensor_ to_broker_with_sql"/>
+<img src="project_screenshots/grafana_temperature_graf.png" alt="grafana_temperature_graf"/>
+
+# Presentation Slides
    Midterm Presentation on topic 'packages'(Use Chrome for best view):
    [Google Slides link to presentation](https://docs.google.com/presentation/d/1hrXaewqivHxVyLq9jCytpMvTzpTxJ-yI_wwBTIthlHI/edit#slide=id.p)
    
   Final presentation(Use Chrome for best view):
   [Google Slides link to presentation](https://docs.google.com/presentation/d/1bdDMfEQ3tYdK1lGkH5KHnMsGwzbkqkJ0AcXlb6eBV8A/edit#slide=id.g2593bad232c_1_0)
 
-## Steps to replicate:
+# Project Architecture
+![image](Architecture.jpeg)
+
+## Steps to replicate(Details are listed below):
+1. [Connect all the components(LED Light, DHT11 Temperature Sensor) with Sensor Node(nrf52840dk)](#sensor_node)
 1. Broker need to run in AWS
 2. Start subscribe client in AWS ->
 ```python3 pub_client_with_sql.py```
@@ -36,13 +42,7 @@ User case scenario for running the application:
 `start 2600:1f18:6929:5505:5ea4:f15c:41fb:1872 1885`
 Send 5 periodic data to from sensor node to AWS EC2 instance , LED light will also blink 5 times
 
-# Screenshots
-<img src="project_screenshots/gnrc_border_router.png" alt="gnrc_border_router" width="500"/>
-<img src="project_screenshots/mqtt-sn_broker_ec2.png" alt="mqtt-sn_broker_ec2" width="500"/>
-<img src="project_screenshots/sensor_ to_broker_with_sql.png" alt="sensor_ to_broker_with_sql"/>
-<img src="project_screenshots/grafana_temperature_graf.png" alt="grafana_temperature_graf"/>
-
-# Scripts
+# Detail about Scripts
 
 
 ### Clone RIOT OS Repository
@@ -52,6 +52,7 @@ git clone https://github.com/RIOT-OS/RIOT.git
 ```
 
 ## Set up NRFDK52840 Board(Sensor Node):
+<a name="sensor_node"></a>
 Move to this directory in riot os examples/temperature_mqttsn folder, click
 
 > Open in Terminal
