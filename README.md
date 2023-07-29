@@ -22,51 +22,58 @@ Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 # Project Architecture
 ![image](Architecture.jpeg)
 
-## Steps to replicate(Details are listed below):
-1. [Connect all the components(LED Light, DHT11 Temperature Sensor) with Sensor Node(nrf52840dk)](#sensor_node)
-1. Broker need to run in AWS
-2. Start subscribe client in AWS ->
+## Index: Steps to replicate(Click on the hyperlink for details):
+1. [Clone RIOT OS Repository](#riot_os)
+2. [Clone/download our project repository](#project_repo)
+2. [Connect all the components(LED Light, DHT11 Temperature Sensor) with Sensor Node(nrf52840dk)](#sensor_node)
+3. Broker need to run in AWS
+4. Start subscribe client in AWS ->
 ```python3 pub_client_with_sql.py```
-3. start software from nrf52840dk board
-4. start gnrc border router software from dongle which is flashed already
-5. start grafana server(hyperlink-below)
-6. login to grafana and refresh to see the updates of fresh temperature saved in the database
-
-So first clone RIOT OS Repository(see below) and after clone/download the whole project repository using
-```bash
-git clone https://github.com/zakilive/iot-cloud-riot.git
-```
-go to `IOT_final_project` and copy `temperature_mqttsn` to riot example folder then get inside the folder and flash it with nrf52840dk board
-
-User case scenario for running the application:
-`start 2600:1f18:6929:5505:5ea4:f15c:41fb:1872 1885`
-Send 5 periodic data to from sensor node to AWS EC2 instance , LED light will also blink 5 times
-
-# Detail about Scripts
+5. start software from nrf52840dk board
+6. start gnrc border router software from dongle which is flashed already
+7. start grafana server(hyperlink-below)
+8. login to grafana and refresh to see the updates of fresh temperature saved in the database
 
 
-### Clone RIOT OS Repository
+# Detail about the steps to reproduce the project:
+
+
+### Clone RIOT OS Repository<a name="riot_os"></a>
+
+Need to clone the latest RIOT OS from official github repository
 
 ```bash
 git clone https://github.com/RIOT-OS/RIOT.git
 ```
 
-## Set up NRFDK52840 Board(Sensor Node):<a name="sensor_node"></a>
+### Clone/download our project repository<a name="project_repo"></a>
+1st step,
+Clone/download our project repository using
+```bash
+git clone https://github.com/zakilive/iot-cloud-riot.git
+```
+
+2nd step,
+Open the cloned repository, open `IOT_final_project` and copy `temperature_mqttsn` from there to Riot OS `example` folder then get inside the folder and flash it with nrf52840dk board
+
+## Set up NRFDK52840dk Board(Sensor Node):<a name="sensor_node"></a>
 In NRFDK52840dk board components connection,
-LED Light:
+LED Light installation:
 Positive longer side -> on P0.04 Port of the board
 Negative shorter side -> on GND port of the board
 
-DHT 11 Temperature Sensor:
+DHT 11 Temperature Sensor Installation:
 DHT11 Signal cable  -> on P0.03 port of the board
 Positive Cable -> on 5V port of the board
 GND cable -> on GND port of the board
 
-Move to this directory in riot os examples/temperature_mqttsn folder, click
+### Flashing the Sensor Node:
+
+Move to this directory from GUI in riot os examples/temperature_mqttsn folder, right click and find
 
 > Open in Terminal
 
-or from terminal directly put this command below:
+or from any terminal move directly to examples/temperature_mqttsn folder and put this command below:
 `PORT=/dev/ttyACM1 BOARD=nrf52840dk make term flash PROGRAMMER=openocd`
 
 Here openocd is needful when normal flash does not work
@@ -74,8 +81,15 @@ For normal flash:
 `PORT=/dev/ttyACM1 BOARD=nrf52840dk make term flash`
 
 It works as sensor node, so we start the application from here using:
-Where `start aws_ipv6 broker_port`
+Where `start aws_ipv6_address broker_port`
+For our project it is:
+`start 2600:1f18:6929:5505:5ea4:f15c:41fb:1872 1885`
+`
+User case scenario for running the application:
+It sends 5 periodic data from sensor node to AWS EC2 instance MQTT-SN broker, LED light will also blink 5 times for successful temperature getting
 
+In case of failure to connect, error message will be shown and LED light will also blink 5 times for attempt
+to get temperature.
 ## Establish a WireGuard VPN tunnel:
 1. Go to the show application tab in ubuntu and search for advanced network connections.
 2. Create the icon to make a new connection and give 'wireguard' as connection type from virtual section.
