@@ -51,8 +51,8 @@ Send 5 periodic data to from sensor node to AWS EC2 instance , LED light will al
 git clone https://github.com/RIOT-OS/RIOT.git
 ```
 
-## Set up NRFDK52840 Board(Sensor Node):
-<a name="sensor_node"></a>
+## Set up NRFDK52840 Board(Sensor Node):<a name="sensor_node"></a>
+
 Move to this directory in riot os examples/temperature_mqttsn folder, click
 
 > Open in Terminal
