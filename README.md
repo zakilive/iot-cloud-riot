@@ -1,7 +1,7 @@
 
 # IoT: From Microcontroller to Cloud with Riot OS
-## Summer Semester 2023; Master of Science Program
-## Frankfurt University of Applied Sciences
+Summer Semester 2023; Master of Science
+Frankfurt University of Applied Sciences, Germany
 
 Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 
