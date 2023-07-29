@@ -38,10 +38,10 @@ User case scenario for running the application:
 Send 5 periodic data to from sensor node to AWS EC2 instance , LED light will also blink 5 times
 
 # Screenshots
-<img src="project_screenshots/gnrc_border_router.png" alt="gnrc_border_router" width="200"/>
-![image](project_screenshots/mqtt-sn_broker_ec2.png)
-![image](project_screenshots/'sensor_ to_broker_with_sql.png')
-![image](project_screenshots/grafana_temperature_graf.png)
+<img src="project_screenshots/gnrc_border_router.png" alt="gnrc_border_router" width="400"/>
+<img src="project_screenshots/mqtt-sn_broker_ec2.png" alt="mqtt-sn_broker_ec2" width="400"/>
+<img src="'sensor_ to_broker_with_sql.png'" alt="sensor_ to_broker_with_sql" width="400"/>
+<img src="project_screenshots/grafana_temperature_graf.png" alt="grafana_temperature_graf"/>
 
 # Scripts
 
