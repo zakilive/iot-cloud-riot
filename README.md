@@ -1,5 +1,8 @@
 
-# IoT-cloud-riot
+# IoT: From the Microcontroller to the Cloud with Riot OS
+## Summer Semester 2023; Master of Science Program
+## Frankfurt University of Applied Sciences
+
 Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 
 # Architecture
@@ -33,6 +36,12 @@ go to `IOT_final_project` and copy `temperature_mqttsn` to riot example folder t
 User case scenario for running the application:
 `start 2600:1f18:6929:5505:5ea4:f15c:41fb:1872 1885`
 Send 5 periodic data to from sensor node to AWS EC2 instance , LED light will also blink 5 times
+
+# Screenshots
+![image](gnrc_border_router.png)
+![image](mqtt-sn_broker_ec2.png)
+![image](sensor_ node_and_broker_with_sql.png)
+![image](grafana_temperature_graf.png)
 
 # Scripts
 
