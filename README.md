@@ -22,7 +22,7 @@ Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 # Project Architecture
 ![image](Architecture.jpeg)
 
-## Index: Steps to replicate(Click on the hyperlink for details):
+## Index: Steps to replicate(Click on the hyperlink for details):<a name="index"></a>
 1. [Clone RIOT OS Repository](#riot_os)
 2. [Clone/download our project repository](#project_repo)
 2. [Connect all the components(LED Light, DHT11 Temperature Sensor) with Sensor Node(nrf52840dk)](#sensor_node)
@@ -90,6 +90,8 @@ It sends 5 periodic data from sensor node to AWS EC2 instance MQTT-SN broker, LE
 
 In case of failure to connect, error message will be shown and LED light will also blink 5 times for attempt
 to get temperature.
+
+[Jump to Index](#index)
 ## Establish a WireGuard VPN tunnel:
 1. Go to the show application tab in ubuntu and search for advanced network connections.
 2. Create the icon to make a new connection and give 'wireguard' as connection type from virtual section.
