@@ -26,6 +26,7 @@ Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 1. [Clone RIOT OS Repository](#riot_os)
 2. [Clone/download our project repository](#project_repo)
 2. [Connect all the components(LED Light, DHT11 Temperature Sensor) with Sensor Node(nrf52840dk)](#sensor_node)
+3. [Establish a WireGuard VPN tunnel](#wireguard)
 3. Broker need to run in AWS
 4. Start subscribe client in AWS ->
 ```python3 pub_client_with_sql.py```
@@ -93,16 +94,15 @@ In case of failure to connect, error message will be shown and LED light will al
 to get temperature.
 
 [Jump to Index](#index)
-## Establish a WireGuard VPN tunnel:
+## Establish a WireGuard VPN tunnel:<a name="wireguard"></a>
 1. Go to the show application tab in ubuntu and search for advanced network connections.
 2. Create the icon to make a new connection and give 'wireguard' as connection type from virtual section.
 3. Add the private key and other IPV6 configuration details provided and save it. 
 4. Activate the connection using: 
    ``` bash 
     nmtui
-   ```   
-
-
+   ```
+[Jump to Index](#index)
 ## Setup gnrc_border-router:
 
 
