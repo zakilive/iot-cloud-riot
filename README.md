@@ -1,5 +1,5 @@
 
-# IoT: From the Microcontroller to the Cloud with Riot OS
+# IoT: From Microcontroller to Cloud with Riot OS
 ## Summer Semester 2023; Master of Science Program
 ## Frankfurt University of Applied Sciences
 
