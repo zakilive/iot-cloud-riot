@@ -32,7 +32,7 @@ go to `IOT_final_project` and copy `temperature_mqttsn` to riot example folder t
 
 User case scenario for running the application:
 `start 2600:1f18:6929:5505:5ea4:f15c:41fb:1872 1885`
-Send 5 periodic data to from sensor node to AWS EC2 instance , LED light will also blin 5 times
+Send 5 periodic data to from sensor node to AWS EC2 instance , LED light will also blink 5 times
 
 # Scripts
 
