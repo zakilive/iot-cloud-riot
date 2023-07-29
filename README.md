@@ -52,6 +52,15 @@ git clone https://github.com/RIOT-OS/RIOT.git
 ```
 
 ## Set up NRFDK52840 Board(Sensor Node):<a name="sensor_node"></a>
+In NRFDK52840dk board components connection,
+LED Light:
+Positive longer side -> on P0.04 Port of the board
+Negative shorter side -> on GND port of the board
+
+DHT 11 Temperature Sensor:
+DHT11 Signal cable  -> on P0.03 port of the board
+Positive Cable -> on 5V port of the board
+GND cable -> on GND port of the board
 
 Move to this directory in riot os examples/temperature_mqttsn folder, click
 
@@ -66,8 +75,6 @@ For normal flash:
 
 It works as sensor node, so we start the application from here using:
 Where `start aws_ipv6 broker_port`
-
-
 
 ## Establish a WireGuard VPN tunnel:
 1. Go to the show application tab in ubuntu and search for advanced network connections.
