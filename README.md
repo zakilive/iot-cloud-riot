@@ -45,7 +45,7 @@ Need to clone the latest RIOT OS from official github repository
 ```bash
 git clone https://github.com/RIOT-OS/RIOT.git
 ```
-
+[Jump to Index](#index)
 ### Clone/download our project repository<a name="project_repo"></a>
 1st step,
 Clone/download our project repository using
@@ -56,6 +56,7 @@ git clone https://github.com/zakilive/iot-cloud-riot.git
 2nd step,
 Open the cloned repository, open `IOT_final_project` and copy `temperature_mqttsn` from there to Riot OS `example` folder then get inside the folder and flash it with nrf52840dk board
 
+[Jump to Index](#index)
 ## Set up NRFDK52840dk Board(Sensor Node):<a name="sensor_node"></a>
 In NRFDK52840dk board components connection,
 LED Light installation:
