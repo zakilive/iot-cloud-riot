@@ -215,7 +215,7 @@ Before you begin, make sure you have the following:
 14. Continue with [Execution of commands on EC2](#execution-of-commands-on-ec2)
 
 
-### creating new keypair(.pemfile)<a name="creation-of-new-key-pair"></a>
+### Creating new keypair(.pemfile)<a name="creation-of-new-key-pair"></a>
 1. Create Key Pair:
 Click on the "Create Key Pair" button at the top of the Key Pairs page.
 
@@ -417,18 +417,17 @@ userid and password is same as mysql root password mentioned [above](#mysql_pass
 After login there, the table for temperature on different date times can be seen
 
 [Jump to Index](#index)
-
-## Troubleshoots for Timezone mismatch in Grafana with Database:
+## Troubleshoots for Timezone Mismatch in Grafana with Database:
 After the installation and setup of Grafana to read temperature from MySQL database grafana time was showing 2 hours more than what time is saved in the database, this issue we tried to fix it from database time, systeme time as well as in Grafana's own general setting time but we found by research it is Grafana's own issue and not in our hand.
 
 These are the steps that we followed to fix it,
 The EC2 instance timezone was set to +00:00 so we changed the timezone to Europe as we are from Frankfurt in Berlin timezone. This steps can be followed to set to another timezone.
 
 Set to Berlin timezone:
-`mysql -u your_username -p
+``` mysql -u your_username -p
 SET GLOBAL time_zone = '+02:00';
 SELECT @@global.time_zone;
- exit or pressing Ctrl + D`
+ ```
 
 [Jump to Index](#index)
 ## Grafana Installation with NGINX as a Reverse Proxy<a name="grafana_install"></a>
@@ -509,7 +508,6 @@ If everything is set up correctly, you should be able to access and use Grafana 
 For our project grafana login Credentials, username: admin, password: root123
 
 [Jump to Index](#index)´
-
 ### Setup grafana with Database:<a name="grafana_dashboard"></a>
 Add a Data Source:
 
@@ -552,7 +550,6 @@ LIMIT
 - Click Refresh icon to see the updates of fresh temperature saved in the Database
 
 [Jump to Index](#index)´
-
 # Knowledgebase:<a name="knowledgebase"></a>
 
 ## How everything works
@@ -615,12 +612,16 @@ Users can access Grafana's web interface using their web browsers and the EC2 in
 
 ## Network connection troubleshoots between sensor nodes and border router or global ip:
 Network propagation check from Riot OS application terminal:
+
+```
 ip neigh
 ifconfig
+```
 
 In some cases check with Wireshark network tool for finding if the each network nodes can be reached properly to other node or can be ping with googl.com ipv6 address
 
 ## For SCP in IPV6:
+For doing SCP here mentioned command can be used:
 
 from ec2 to local:
 `scp -i MQTT_BROKER.pem ubuntu@[aws_ec2_ipv6]:/home/ubuntu/mqtt_subscriber_client_with_sql.py ~/Downloads/`
