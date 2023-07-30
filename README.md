@@ -22,8 +22,9 @@ Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 # Project Architecture
 ![image](Architecture.jpeg)
 
-## Index: Steps to replicate project(Click on the hyperlink for details):<a name="index"></a>
-1.[Components and Boards](#components)
+## Index: Steps to replicate this project:<a name="index"></a>
+
+1. [Components and Boards](#components)
 2. [Clone RIOT OS Repository](#riot_os)
 3. [Clone/download our project repository](#project_repo)
 4. [Establish a WireGuard VPN tunnel](#wireguard)
