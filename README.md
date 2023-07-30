@@ -22,7 +22,7 @@ Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 # Project Architecture
 ![image](Architecture.jpeg)
 
-## Index: Steps to replicate this project:<a name="index"></a>
+# Index: Steps to replicate this project:<a name="index"></a>
 
 1. [Components and Boards](#components)
 2. [Clone RIOT OS Repository](#riot_os)
@@ -38,10 +38,10 @@ Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 13. [Login and Setup Grafana with Database and Dashboard to Show Temperature Graf](#grafana_dashboard)
 
 
-[Knowledgebase](#knowledgebase)
-[Basic Troubleshoots](#troubleshoots)
+- [Knowledgebase](#knowledgebase)
+- [Basic Troubleshoots](#troubleshoots)
 
-# Detail about the steps to reproduce the project:
+# Details about the steps to reproduce the project:
 ### Components and Boards<a name="components"></a>
 DHT11 Sensor
 LED Light
