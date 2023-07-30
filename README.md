@@ -37,7 +37,7 @@ Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 12. [Grafana Installation with NGINX and start server](#grafana_install)
 13. [Login and Setup Grafana with Database and Dashboard to Show Temperature Graf](#grafana_dashboard)
 
-
+# Help:
 - [Knowledgebase](#knowledgebase)
 - [Basic Troubleshoots](#troubleshoots)
 
