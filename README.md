@@ -22,24 +22,32 @@ Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 # Project Architecture
 ![image](Architecture.jpeg)
 
-## Index: Steps to replicate(Click on the hyperlink for details):<a name="index"></a>
-1. [Clone RIOT OS Repository](#riot_os)
-2. [Clone/download our project repository](#project_repo)
-2. [Connect all the components(LED Light, DHT11 Temperature Sensor) with Sensor Node(nrf52840dk)](#sensor_node)
-3. [Establish a WireGuard VPN tunnel](#wireguard)
-3. [Setup gnrc_border-router](#gnrc_border-router)
-3. Broker need to run in AWS
-4. Start subscribe client in AWS ->
-```python3 pub_client_with_sql.py```
-5. start software from nrf52840dk board
-6. start gnrc border router software from dongle which is flashed already
-7. start grafana server(hyperlink-below)
-8. login to grafana and refresh to see the updates of fresh temperature saved in the database
+## Index: Steps to replicate project(Click on the hyperlink for details):<a name="index"></a>
+1.[Components and Boards](#components)
+2. [Clone RIOT OS Repository](#riot_os)
+3. [Clone/download our project repository](#project_repo)
+4. [Establish a WireGuard VPN tunnel](#wireguard)
+5. [Setup gnrc_border-router and start gnrc border router software from nrf52840 dongle](#gnrc_border-router)
+6. [In AWS Setup EC2 instance with IPV6 address](#aws_ec2_setup)
+7. [Mosquitto RSMB MQTT-SN Broker needs to run in AWS](#mosquitto)
+8. [Start MQTT message subscriber client in AWS](#subscriber)
+9. [Connect all the components(LED Light, DHT11 Temperature Sensor) with Sensor Node(nrf52840dk) and start Application software from nrf52840dk board](#sensor_node)
+11. [MySQL Database creation](#mysql)
+12. [Grafana Installation with NGINX and start server](#grafana_install)
+13. [Login and Setup Grafana with Database and Dashboard to Show Temperature Graf](#grafana_dashboard)
 
+
+[Knowledgebase](#knowledgebase)
+[Basic Troubleshoots](#troubleshoots)
 
 # Detail about the steps to reproduce the project:
-
-
+### Components and Boards<a name="components"></a>
+DHT11 Sensor
+LED Light
+Female to Male cables
+Nrf52840dk board
+Nrf52840dongle
+[Jump to Index](#index)
 ### Clone RIOT OS Repository<a name="riot_os"></a>
 
 Need to clone the latest RIOT OS from official github repository
@@ -136,6 +144,17 @@ Follow the steps below to build and run the GNRC Border Router Example:
    ```
 
 
+   Add the following parameters in makefile of gnrc_border router:
+   `DEFAULT_CHANNEL := 23  # changed default channel to 23`
+
+   and enabling network connectivity in dongle
+   ```
+   UPLINK ?= cdc-ecm
+   PREFIX_CONF := uhcp`
+    ```
+
+   this configuration file is also available in `utils/Gnrc_makefile`
+
 5. Find the USB-port to which the dongle has been connected.
      ``` bash
      make list-ttys 
@@ -145,7 +164,7 @@ Follow the steps below to build and run the GNRC Border Router Example:
     PORT=/dev/ttyACM3 IPV6_PREFIX=2001:470:7347:c401::/64 BOARD=nrf52840dongle make term flash 
    ```
 [Jump to Index](#index)
-## Setup EC2 instance with IPV6 address
+## Setup EC2 instance with IPV6 address<a name="aws_ec2_setup"></a>
 
 ### Prerequisites
 
@@ -195,7 +214,7 @@ Before you begin, make sure you have the following:
 14. Continue with [Execution of commands on EC2](#execution-of-commands-on-ec2)
 
 
-### creating new keypair(.pemfile)
+### creating new keypair(.pemfile)<a name="creation-of-new-key-pair"></a>
 1. Create Key Pair:
 Click on the "Create Key Pair" button at the top of the Key Pairs page.
 
@@ -226,7 +245,8 @@ sudo apt-get install mosquitto-clients
 sudo apt install awscli
 ```
 
-### Accessing the EC2 Instance
+### Accessing the EC2 Instance from local machine
+The access can be happened with port 22, as we have used AWS learning account for this we needed to open this port for ipv6 to use it.
 
 Navigate to the directory where you save the keypair and use the key pair you selected during instance launch to SSH into the EC2 instance with its IPv6 address.
 
@@ -235,8 +255,11 @@ Navigate to the directory where you save the keypair and use the key pair you se
   ```
 
 ## Mosquitto RSMB (Really Small Message Broker) Broker:
+The data transfer from Sensor node to AWS will be possible with port 1885 which is MQTT-SN port. Another port 1886 is MQTT port which is listened by the [mqtt_subscriber_client](#subscriber)
 
-RSMB is a lightweight MQTT and MQTT-SN capable broker developed by Eclipse.
+As we have used AWS Academy Learning account, so we needed to open these ports for ipv6.
+
+RSMB is a lightweight MQTT and MQTT-SN capable broker developed by Eclipse. We used this in our project.
 
 ### Building RSMB
 
@@ -261,8 +284,9 @@ To build RSMB, follow these steps:
    ipv6 true
 
    ```
+this configuration file is also available in `utils/RSMBconfig.conf`
 
-### Running RSMB
+### Running RSMB<a name="mosquitto"></a>
 
 1. SSH into your EC2 instance:
    ``` bash
@@ -270,7 +294,7 @@ To build RSMB, follow these steps:
    ```
 2. Copy the RSMB executable and configuration file to your EC2 instance:
    ``` bash
-   scp -r /Downloads/RIOT-master/examples/emcute_mqttsn ubuntu@2600:1f18:6929:5505:5ea4:f15c:41fb:1872:
+   scp -r /Downloads/RIOT-master/examples/emcute_mqttsn ubuntu@2600:1f18:6929:5505:5ea4:f15c:41fb:1872
    ```
 3. Start the broker:
    ``` bash
@@ -286,24 +310,50 @@ sudo lsof -i :1886
 sudo kill 904  
 ```
 
+### Start MQTT message subscriber client<a name="subscriber"></a>
+  Go to this directory form the cloned project, `IOT_final_project
+/mqtt_subscriber_client_with_sql.py` and SCP with this command from local to ec2:
+
+`scp -i MQTT_BROKER.pem ~/Downloads/IOT_final_project
+/mqtt_subscriber_client_with_sql.py ubuntu@[2600:1f18:6929:5505:5ea4:f15c:41fb:1872]:/home/ubuntu/`
+
+Start the application with ```python3 mqtt_subscriber_client_with_sql.py```
+
+### Regarding the MQTT message subscriber client
+  1. It save data in the database
+  2. Also show updates of saving from terminal
+  3. Show temperature got from broker in real time
+
 ## Elastic IP Creation:
 
 Each time login to the EC2 instance IP got changes, so changed the IP to Elastic IP/Fixed IPV4 which does not change even after closing the instance.
 Here is the grafana server login for our project: http://54.175.129.183:3000
 
+## MySQL Database Creation:<a name="mysql"></a>
+Install MySQL:
+```
+sudo apt update
+sudo apt install mysql-server
+```
 
-### Regarding the Subscriber Client
-  1. It save data in the database
-  2. Also show updates of saving from terminal
-  3. Show temperature got from broker in real time
+Start MySQL:
+`sudo systemctl start mysql`
 
-## MySQL Database Creation:
-Install MySQL
-Login to mysql after install:
-sudo mysql
+Ensure MySQL starts automatically when the system boots:
+`sudo systemctl enable mysql`
+
+check the status of the MySQL service:
+`sudo systemctl status mysql`
+
+Login to mysql after install from terminal:<a name="mysql_pass"></a>
+`sudo mysql`
+
 username: root
 password: admin
+
 mysql> `mysql -u root -p`
+
+Put the below SQL command for creation of database, tables and coloumns for our project from mysql terminal:
 
 ````
 CREATE DATABASE `TemperatureReadings`;
@@ -314,32 +364,75 @@ CREATE TABLE `Readings` (
   PRIMARY KEY (`datetime`)
 )
 ````
-For friendly database handling we can use also *phpmyadmin*, which is web based management platform.
-Install phpmyadmin:http://54.175.129.183:8080/phpmyadmin
-Setup with apache->port 8080->make aws security group rules
-after login there you can see the table for temperature on different times
+[Jump to Index](#index)
 
-## Troubleshoots for database timezone:
-Grafana time is showing 2 hours more than what saved in the database, this issue can be ignored. We changed the timezone to Europe but still this issue exists.
+# Install Apache and phpmyadmin:
+For easy database handling we can use also *phpmyadmin* instead of terminal, *phpmyadmin* is a web based database management platform.
 
-This steps can be followed to set to another timezone.
+Setup with apache in port 8080 and make aws security group rules to open this. We use port 8080 for Apache webserver as we used reverse proxy as nginx and it can use port 80, so we kept it free.
+
+steps to install Apache, PHP, and PHPMyAdmin and configure Apache to run on port 8080:
+
+Step 1: Update Package List
+Open a terminal and update the package list to ensure you have the latest information about available packages. Enter the following command:
+
+`sudo apt update`
+
+Step 2: Install Apache and PHP
+Install Apache and PHP using the following command:
+
+`sudo apt install apache2 php libapache2-mod-php`
+
+Step 3: Change Apache Port to 8080
+By default, Apache listens on port 80. We'll change this to 8080. First, open the ports.conf file with a text editor:
+
+`sudo nano /etc/apache2/ports.conf`
+`
+Look for the line that says Listen 80 and change it to Listen 8080.
+
+Save and close the file (press Ctrl+O, then Enter, and Ctrl+X).
+
+Step 4: Restart Apache
+After changing the port, you need to restart Apache for the changes to take effect:
+
+`sudo service apache2 restart`
+
+Step 5: Install PHPMyAdmin
+Now, you can install PHPMyAdmin using the following command:
+
+`sudo apt install phpmyadmin`
+
+During the installation process, you'll be prompted to configure PHPMyAdmin. When asked to choose a web server, select "apache2." Also, when prompted whether to use dbconfig-common to set up the database, choose "Yes."
+
+Step 6: Configure PHPMyAdmin
+PHPMyAdmin is now installed, but to access it, you need to configure Apache to recognize it. Create a symbolic link for PHPMyAdmin in the Apache web directory:
+
+`sudo ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin`
+
+Access phpmyadmin from browser after installation:http://54.175.129.183:8080/phpmyadmin
+
+userid and password is same as mysql root password mentioned [above](#mysql_pass)
+
+After login there, the table for temperature on different date times can be seen
+
+[Jump to Index](#index)
+
+## Troubleshoots for Timezone mismatch in Grafana with Database:
+After the installation and setup of Grafana to read temperature from MySQL database grafana time was showing 2 hours more than what time is saved in the database, this issue we tried to fix it from database time, systeme time as well as in Grafana's own general setting time but we found by research it is Grafana's own issue and not in our hand.
+
+These are the steps that we followed to fix it,
+The EC2 instance timezone was set to +00:00 so we changed the timezone to Europe as we are from Frankfurt in Berlin timezone. This steps can be followed to set to another timezone.
+
 Set to Berlin timezone:
 `mysql -u your_username -p
 SET GLOBAL time_zone = '+02:00';
 SELECT @@global.time_zone;
  exit or pressing Ctrl + D`
 
-## Grafana Installation with NGINX as a Reverse Proxy
+[Jump to Index](#index)
+## Grafana Installation with NGINX as a Reverse Proxy<a name="grafana_install"></a>
 
-This repository provides step-by-step instructions for installing Grafana and configuring NGINX as a reverse proxy to access Grafana.
-
-### Prerequisites
-
-Before you begin, ensure you have the following:
-
-- A Linux-based system (this guide uses Ubuntu).Establish a WireGuard VPN tunnel EC2 IP address.
-- Administrative access to the server.
-- Domain name or public IP address pointing to the server(this case)
+Here is step-by-step instructions for installing Grafana and configuring NGINX as a reverse proxy in AWS as well as how to access Grafana is mentioned
 
 ### Installation
 
@@ -387,6 +480,8 @@ server {
 }
 ```
 
+this configuration file is also available in `IOT_final_project/grafana.conf`
+
 ### Enable the NGINX server block configuration
 ``` bash
 sudo ln -s /etc/nginx/sites-available/grafana.conf /etc/nginx/sites-enabled/
@@ -410,21 +505,38 @@ Open a web browser and navigate to http://your_public_ip of EC2 instance: 3000. 
 
 If everything is set up correctly, you should be able to access and use Grafana through the NGINX reverse proxy.
 
-For our project grafana login, user: admin, pass: root123
+For our project grafana login Credentials, username: admin, password: root123
+
+[Jump to Index](#index)´
+
+### Setup grafana with Database:<a name="grafana_dashboard"></a>
+Add a Data Source:
+
+Go to "Configuration" (gear icon on the left sidebar) -> "Data Sources" -> "Add Data Source".
+Select the appropriate data source you want to connect to (e.g., Prometheus, MySQL, InfluxDB, etc.).
+Fill in the necessary details like URL, database credentials, etc.
+Click "Save & Test" to verify that the connection is successful
 
 ## Setup grafana Dashboard
-1. Add plus icon-> click "New dashboard"-> Add visualization .> Click MYSQL-TemperatureReadings(It shows after connection to mysql successful) database as Data source
-2. On dataset TemperatureReadings -> Table -> Select "Readings"
--> inside grafana -> bar chart, histogram  and table both shows good temperature graf
+Login with Credentials mentioned above,
 
-Some steps:
-Column -> datetime
-Column -> temperature
-Click Run query
-Click on Zoom data and interval
-Click on Refresh button to update database
+1. Add plus "+" icon-> click "New dashboard"-> Add visualization .> Click MYSQL-TemperatureReadings(It shows after connection to mysql successful) database as Data source
+2. On dataset TemperatureReadings select "Readings" as table
+3. Inside grafana dashboard panel for visualization bar chart, histogram both shows good temperature graf
+4. Tabular view can also be seen from Grafana by click on table button in Dashboard settings
 
-This manual query can be considered if any issues while setup where datetime mentioned as time to understand by grafana it as time series
+Some steps mention to setup well, We have two coloumns in the database so,
+- Set first Column to `datetime`
+- Set second Column to `temperature`
+- Click Run query to fetch data from database
+- After successful data retrieve possible from database it will be shown Zoom data in the dashboard click on it and set up interval according prefered dates and time
+- Click on Refresh button to update database if any new data added
+
+From the sensor node it submit 5 data points from the environment with 5 seconds delay
+
+
+This manual query can be considered if any issue happens while setup to show temperature values from database, In this query datetime is mentioned as time to be understood by Grafana that it is a time series column
+
 ````
 SELECT
   datetime AS "time",
@@ -434,7 +546,13 @@ FROM
 LIMIT
   50
  ````
-In the current graf Hair dryer and ice helped to show the graf to increase and decrease temperature alongside as well as normal temperature.
+- In the current graf Hair dryer and ice helped to show the graf to increase and decrease temperature alongside as well as normal temperature.
+
+- Click Refresh icon to see the updates of fresh temperature saved in the Database
+
+[Jump to Index](#index)´
+
+# Knowledgebase:<a name="knowledgebase"></a>
 
 ## How everything works
 In Order to send data from NRFDK52840 board  to the AWS cloud the 
@@ -445,11 +563,11 @@ application consists of 9 different services.
 4. VPN WireGuard
 5. Mosquitto MQTT Broker on AWS
 6. Publisher script on EC2 instance 
-7.  SQLite Database
+7. MySQL Database
 8. Grafana with Nginx
 9. Using an IPv4 address to access a web browser
 
-### Sensor Data Collection Using nRFDK52840 Board and DHT11 Sensors:
+### Sensor Data Collection Using nRF52840dk Board and DHT11 Sensors:
 
 The nRF52840 DK board is running RIOT OS, and the SAUL registry is used to access and read data from the DHT11 sensors. The SAUL interface is used to collect temperature  data from the DHT11 sensors.
 
@@ -474,7 +592,7 @@ The broker processes and prepares the incoming data for storage.
 
 The MQTT publisher script, which runs on the EC2 instance, works as a MQTT client, subscribing to particular MQTT topics on the RSMB broker.
 When the RSMB broker receives MQTT-SN messages from the nRF DK board and converts them to MQTT messages, they are published to the appropriate MQTT topics. The MQTT publisher script monitors these MQTT topics and gets sensor data from the RSMB broker.
-When the sensor data is received, the script stores it in a SQLite database for further analysis and retrieval.
+When the sensor data is received, the script stores it in a MySQL database for further analysis and retrieval.
 
 ### Grafana with Nginx: 
 
@@ -484,6 +602,8 @@ Grafana is installed on the EC2 instance in order to visualize sensor data saved
 
 Users can access Grafana's web interface using their web browsers and the EC2 instance's public IPv4 address. The Grafana interface visualizes sensor data in real time, allowing for data analysis and decision-making.
 
+[Jump to Index](#index)
+### Basic Troubleshoots:<a name="troubleshoots"></a>
 
 ## Troubleshoots while Replicate:
 **if broker connection lost :**
@@ -492,11 +612,19 @@ Users can access Grafana's web interface using their web browsers and the EC2 in
 - Some internet provider close packet forwarding with router
 - AWS learner lab close in 5-10 minutes duration so need to restart it
 
-**For SCP in IPV6:**
+## Network connection troubleshoots between sensor nodes and border router or global ip:
+Network propagation check from Riot OS application terminal:
+ip neigh
+ifconfig
+
+In some cases check with Wireshark network tool for finding if the each network nodes can be reached properly to other node or can be ping with googl.com ipv6 address
+
+## For SCP in IPV6:
 
 from ec2 to local:
-`scp -i MQTT_BROKER.pem ubuntu@[aws_ec2_ipv6]:/home/ubuntu/pub_client_with_sql.py ~/Downloads/`
+`scp -i MQTT_BROKER.pem ubuntu@[aws_ec2_ipv6]:/home/ubuntu/mqtt_subscriber_client_with_sql.py ~/Downloads/`
 
 from local to ec2:
 `scp -i MQTT_BROKER.pem ~/Downloads/ ubuntu@[aws_ec2_ipv6]:/home/ubuntu/`
 
+[Jump to Index](#index)
