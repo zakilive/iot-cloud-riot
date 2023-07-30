@@ -27,6 +27,7 @@ Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 2. [Clone/download our project repository](#project_repo)
 2. [Connect all the components(LED Light, DHT11 Temperature Sensor) with Sensor Node(nrf52840dk)](#sensor_node)
 3. [Establish a WireGuard VPN tunnel](#wireguard)
+3. [Setup gnrc_border-router](#gnrc_border-router)
 3. Broker need to run in AWS
 4. Start subscribe client in AWS ->
 ```python3 pub_client_with_sql.py```
@@ -103,8 +104,7 @@ to get temperature.
     nmtui
    ```
 [Jump to Index](#index)
-## Setup gnrc_border-router:
-
+## Setup gnrc_border-router:<a name="gnrc_border-router"></a>
 
 Follow the steps below to build and run the GNRC Border Router Example:
 
@@ -136,16 +136,15 @@ Follow the steps below to build and run the GNRC Border Router Example:
    ```
 
 
-6. Find the USB-port to which the dongle has been connected.
+5. Find the USB-port to which the dongle has been connected.
      ``` bash
      make list-ttys 
    ```
-7. Building GNRC Border example.
+6. Building GNRC Border example.
     ``` bash
     PORT=/dev/ttyACM3 IPV6_PREFIX=2001:470:7347:c401::/64 BOARD=nrf52840dongle make term flash 
    ```
-
-
+[Jump to Index](#index)
 ## Setup EC2 instance with IPV6 address
 
 ### Prerequisites
