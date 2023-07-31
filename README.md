@@ -337,6 +337,7 @@ Start the application with ```python3 mqtt_subscriber_client_with_sql.py```
 Each time login to the EC2 instance IP got changes, so changed the IP to Elastic IP/Fixed IPV4 which does not change even after closing the instance.
 Here is the grafana server login for our project: http://54.175.129.183:3000
 
+[Jump to Index](#index)
 ## MySQL Database Creation:<a name="mysql"></a>
 Install MySQL:
 ```
@@ -608,6 +609,7 @@ The LED light included in the project is red color and it can blink to save from
 
 This scenario can be modified according to needs and can be used in commonly found in domains like aerospace, automotive, medical devices, etc., where safety is of utmost importance which needs some safety standards.
 
+[Jump to Index](#index)
 ### Border-Router
 
 Border Router with IPv6 Address: The Border Router serves as a link between the local IPv6-based sensor network and the external IPv6 network (the internet or cloud services). It enables communication between the nRF52840dk board, which functions on an IPv6 network, and the external network with IPv6 capability.
