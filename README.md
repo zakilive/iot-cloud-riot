@@ -314,7 +314,7 @@ sudo lsof -i :1886
  # If you find a process running on port 1886 and it has a PID of 904, terminate it
 sudo kill 904  
 ```
-
+[Jump to Index](#index)
 ### Start MQTT message subscriber client<a name="subscriber"></a>
   Go to this directory form the cloned project, `IOT_final_project
 /mqtt_subscriber_client_with_sql.py` and SCP with this command from local to ec2:
@@ -544,7 +544,7 @@ Click "Save & Test" to verify that the connection is successful
 ## Setup grafana Dashboard
 Login with Credentials mentioned above,
 
-1. Add plus "+" icon-> click "New dashboard"-> Add visualization .> Click MYSQL-TemperatureReadings(It shows after connection to mysql successful) database as Data source
+1. Add plus "+" icon-> click "New dashboard"-> Add visualization -> Click MYSQL-TemperatureReadings(It shows after connection to mysql successful) database as Data source
 2. On dataset TemperatureReadings select "Readings" as table
 3. Inside grafana dashboard panel for visualization bar chart, histogram both shows good temperature graf
 4. Tabular view can also be seen from Grafana by click on table button in Dashboard settings
