@@ -8,7 +8,7 @@ DEFAULT_CHANNEL := 23  # changed default channel to 23
 # This has to be the absolute path to the RIOT base directory:
 RIOTBASE ?= $(CURDIR)/../..
 
-
+# replaced UPLINK ? = cdc -ecm and PREFIX_CONF := uhcp
 UPLINK ?= cdc-ecm
 PREFIX_CONF := uhcp
 
