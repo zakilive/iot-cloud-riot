@@ -22,6 +22,10 @@ Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 # Project Architecture
 ![image](Architecture.jpeg)
 
+For conducting this research project Oracle VirtualBox VM with UBUNTU OS, as well as Laptop with Ubuntu installed was used.
+
+The project is open source and free to contribute, replicate or distribute under LGPLv3 License.
+
 # Index: Steps to replicate this project:<a name="index"></a>
 
 1. [Components and Boards](#components)
@@ -321,9 +325,9 @@ sudo kill 904
 Start the application with ```python3 mqtt_subscriber_client_with_sql.py```
 
 ### Regarding the MQTT message subscriber client
-  1. It save data in the database
-  2. Also show updates of saving from terminal
-  3. Show temperature got from broker in real time
+  1. It saves temperature data and datetime in the database
+  2. Show temperature data from broker in real time that published from sensor node
+  3. Show updates during saving data in database
 
 ## Elastic IP Creation:
 
@@ -428,6 +432,27 @@ Set to Berlin timezone:
 SET GLOBAL time_zone = '+02:00';
 SELECT @@global.time_zone;
  ```
+## Research Findings and For Possible Issue Fix of Database:
+DHT11 sensor only send integer type value DHT11 datasheet details can be found so that our database is also designed to save integer value. So no floating point values for saving temperature.
+
+Delay of 5 seconds for sending data was needful otherwise it was showing Duplicate entry for the same datetime with MySQL database during save.
+
+Some logs:
+```
+Received message: temperature:25
+
+Temperature reading saved successfully!
+
+Received message: temperature:25
+
+Error while connecting to MySQL: 1062 (23000): Duplicate entry '2023-07-26 00:11:08' for key 'Readings.PRIMARY'
+
+Received message: temperature:25
+
+Error while connecting to MySQL: 1062 (23000): Duplicate entry '2023-07-26 00:11:08' for key 'Readings.PRIMARY'
+
+Received message: temperature:25
+```
 
 [Jump to Index](#index)
 ## Grafana Installation with NGINX as a Reverse Proxy<a name="grafana_install"></a>
@@ -553,44 +578,51 @@ LIMIT
 # Knowledgebase:<a name="knowledgebase"></a>
 
 ## How everything works
-In Order to send data from NRFDK52840 board  to the AWS cloud the 
+In Order to send data from nrf52840dk board to the AWS cloud the
 application consists of 9 different services. 
-1. Sensor Data Collection Using nRFDK52840 Board and DHT11 Sensors
+1. Sensor Data Collection Using nrf52840dk Board and DHT11 Sensors
 2. MQTT-SN execution
+2. Safety Critical Systems LED light blink based on temperature
 3. Border-Router
 4. VPN WireGuard
 5. Mosquitto MQTT Broker on AWS
-6. Publisher script on EC2 instance 
+6. Subscriber script on EC2 instance to catch published message and save to database
 7. MySQL Database
 8. Grafana with Nginx
-9. Using an IPv4 address to access a web browser
+9. Using an IPv4 address to access from web browser
 
-### Sensor Data Collection Using nRF52840dk Board and DHT11 Sensors:
+### Sensor Data Collection Using nrf52840dk Board and DHT11 Sensors:
 
-The nRF52840 DK board is running RIOT OS, and the SAUL registry is used to access and read data from the DHT11 sensors. The SAUL interface is used to collect temperature  data from the DHT11 sensors.
+The nRF52840dk board is running RIOT OS, and the SAUL registry is used to access and read data from the DHT11 sensors. The SAUL interface is used to collect temperature data from the DHT11 sensors.
 
 ### MQTT-SN execution:
 
-The nRFDK52840 board publishes the collected sensor data as MQTT-SN messages using the emcute MQTT-SN library. MQTT-SN is a sensor network protocol that is efficient and ideal for low-power sensors.
+The nRF52840dk board publishes the collected sensor data as MQTT-SN messages using the emcute MQTT-SN library. MQTT-SN is a sensor network protocol that is efficient and ideal for low-power sensors.
+
+### Safety Critical Systems LED light blink based on temperature
+
+The LED light included in the project is red color and it can blink to save from potential hazards if the temperature gets high above a threshold value. In our project we have made this threshold more than 22 degree that means 23 or more degree celsius temperature in the environment of sensor node the light will blink each time while passing the temperature value to EC2 instance. In our project the sensor data passes 5 times and in 5 sec intervals to EC2 instance and disconnects afterwhile from Broker.
+
+This scenario can be modified according to needs and can be used in commonly found in domains like aerospace, automotive, medical devices, etc., where safety is of utmost importance which needs some safety standards.
 
 ### Border-Router
 
-Border Router with IPv6 Address: The Border Router serves as a link between the local IPv6-based sensor network and the external IPv6 network (the internet or cloud services). It enables communication between the nRF DK board, which functions on an IPv6 network, and the external network with IPv6 capability.
+Border Router with IPv6 Address: The Border Router serves as a link between the local IPv6-based sensor network and the external IPv6 network (the internet or cloud services). It enables communication between the nRF52840dk board, which functions on an IPv6 network, and the external network with IPv6 capability.
 
 ### VPN WireGuard:
 
-Using WireGuard, the nRF DK board makes a safe and encrypted VPN connection with an AWS EC2 instance. WireGuard protects and secures data exchanged between the nRF DK board and the EC2 instance.
+Using WireGuard, the nRF52840dk board makes a safe and encrypted VPN connection with an AWS EC2 instance. WireGuard protects and secures data exchanged between the nRF52840dk board and the EC2 instance.
 
 ### Instance of RSMB Broker in EC2:
 
-The RSMB (Really Small Message Broker) broker is hosted on the AWS EC2 instance, which serves as the primary message hub. Through the VPN connection, RSMB receives MQTT-SN messages from the nRF DK board.
-The broker processes and prepares the incoming data for storage.
+The RSMB (Really Small Message Broker) broker is hosted on the AWS EC2 instance, which serves as the primary message hub. Through the VPN connection, RSMB receives MQTT-SN messages from the nRF52840dk board. The broker processes and the incoming data and prepares for next level.
 
-### MQTT Publisher Script:
+### MQTT Subscriber Script for Published Message:
 
 The MQTT publisher script, which runs on the EC2 instance, works as a MQTT client, subscribing to particular MQTT topics on the RSMB broker.
-When the RSMB broker receives MQTT-SN messages from the nRF DK board and converts them to MQTT messages, they are published to the appropriate MQTT topics. The MQTT publisher script monitors these MQTT topics and gets sensor data from the RSMB broker.
-When the sensor data is received, the script stores it in a MySQL database for further analysis and retrieval.
+When the RSMB broker receives MQTT-SN messages from the nRF52840dk board and converts them to MQTT messages, they are published to the appropriate MQTT topics. The MQTT publisher script listen to this same MQTT topics and gets sensor data from the RSMB broker. It also extracts the message from the string.
+
+When the sensor data is received and extracted, the script stores it with current datetime in a MySQL database for further analysis and retrieval.
 
 ### Grafana with Nginx: 
 
@@ -598,7 +630,7 @@ Grafana is installed on the EC2 instance in order to visualize sensor data saved
 
 ### Using an IPv4 address to access a web browser:
 
-Users can access Grafana's web interface using their web browsers and the EC2 instance's public IPv4 address. The Grafana interface visualizes sensor data in real time, allowing for data analysis and decision-making.
+Users can access Grafana's web interface using their web browsers and following the EC2 instance's public IPv4 address. The Grafana interface visualizes sensor data in real time, allowing for data analysis and decision-making.
 
 [Jump to Index](#index)
 ### Basic Troubleshoots:<a name="troubleshoots"></a>
@@ -607,6 +639,8 @@ Users can access Grafana's web interface using their web browsers and the EC2 in
 **if broker connection lost :**
 2023-07-24 02:15:49,752 # error: unable to disconnect
 2023-07-23 18:31:11,970 # error: unable to obtain topic ID
+
+Possible Fix:
 - Some internet provider close packet forwarding with router
 - AWS learner lab close in 5-10 minutes duration so need to restart it
 
@@ -619,6 +653,10 @@ ifconfig
 ```
 
 In some cases check with Wireshark network tool for finding if the each network nodes can be reached properly to other node or can be ping with googl.com ipv6 address
+
+Possible Fix:
+- Always run broker first otherwise broker there will
+- If using from virtual machine, and ethernet connection is lost frequently then need to disconnect and connect again the internet connection, sometimes also need VM restart
 
 ## For SCP in IPV6:
 For doing SCP here mentioned command can be used:
