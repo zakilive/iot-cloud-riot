@@ -216,7 +216,8 @@ Before you begin, make sure you have the following:
 5. Configure the instance details, including the VPC and subnet you created with IPv6 support.
 6. Click **Next: Add Storage** and configure storage settings as needed.
 7. Click **Next: Add Tags** and add any tags you want to associate with the instance.
-8. Click **Next: Configure Security Group** and configure security group rules to allow necessary traffic.
+8. Click **Next: Configure Security Group** and configure security group rules to allow necessary traffic.(Here are the security rules created for this project: [Creating security rules](#creation-of-security-rules)
+
 9. Click **Review and Launch**.
 10. Review your instance configuration and click **Launch**.
 11. Choose an existing key pair or create a new one to access your EC2 instance via SSH.
@@ -244,12 +245,15 @@ For security reasons, you might want to set the appropriate permissions for the 
 This will restrict read and write permissions for the file owner only.
 
 [Jump to Index](#index)
+
+### Creation of security rules
+Here are the some of security rules created for this project
+<img src="project_screenshots/security1.jpeg" alt="Security rules"/>
+<img src="project_screenshots/security2.jpeg" alt="Security rules"/>
+
 ### Execution of commands on EC2
 On EC2 Instance run the following commands:
 ``` bash
-#Update the list of repositories with one containing the latest version of #Mosquitto and update the package lists
-sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa
-sudo apt-get update
 
 #Install the Mosquitto broker, Mosquitto clients and the aws cli
 sudo apt-get install mosquitto
