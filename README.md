@@ -20,7 +20,7 @@ Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
   [Google Slides link to presentation](https://docs.google.com/presentation/d/1bdDMfEQ3tYdK1lGkH5KHnMsGwzbkqkJ0AcXlb6eBV8A/edit#slide=id.g2593bad232c_1_0)
 
 # Project Architecture
-![image](Architecture.jpeg)
+![image](architecture.jpeg)
 
 For conducting this research project Oracle VirtualBox VM with UBUNTU OS, as well as Laptop with Ubuntu installed was used.
 
