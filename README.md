@@ -247,13 +247,20 @@ This will restrict read and write permissions for the file owner only.
 [Jump to Index](#index)
 
 ### Creation of security rules
-Here are the some of security rules created for this project
+EC2->Security Groups->sg-0d6bd7a320d9b311c-launch-wizard-4->Edit inbound rules
+Here are the some of security rules created for this project:
 <img src="project_screenshots/security1.jpeg" alt="Security rules"/>
 <img src="project_screenshots/security2.jpeg" alt="Security rules"/>
 
 ### Execution of commands on EC2
 On EC2 Instance run the following commands:
+
 ``` bash
+#Update package list and install paho Mqtt
+sudo apt update
+sudo apt install python3-pip
+pip3 install paho-mqtt
+
 
 #Install the Mosquitto broker, Mosquitto clients and the aws cli
 sudo apt-get install mosquitto
@@ -325,7 +332,7 @@ sudo lsof -i :1886
 
  # If you find a process running on port 1886 and it has a PID of 904, terminate it
 sudo kill 904  
-```
+ ```
 [Jump to Index](#index)
 ### Start MQTT message subscriber client<a name="subscriber"></a>
   Go to this directory form the cloned project, `IOT_final_project
@@ -335,7 +342,8 @@ sudo kill 904
 /mqtt_subscriber_client_with_sql.py ubuntu@[2600:1f18:6929:5505:5ea4:f15c:41fb:1872]:/home/ubuntu/`
 
 Start the application with 
-```python3 mqtt_subscriber_client_with_sql.py```
+```python3 mqtt_subscriber_client_with_sql.py
+```
 
 ### Regarding the MQTT message subscriber client
   1. It saves temperature data and datetime in the database
@@ -374,7 +382,7 @@ mysql> `mysql -u root -p`
 
 Put the below SQL command for creation of database, tables and columns for our project from MySQL terminal:
 
-````
+ ````
 CREATE DATABASE `TemperatureReadings`;
 USE TemperatureReadings;
 CREATE TABLE `Readings` (
@@ -382,7 +390,7 @@ CREATE TABLE `Readings` (
   `temperature` int DEFAULT NULL,
   PRIMARY KEY (`datetime`)
 )
-````
+ ````
 [Jump to Index](#index)
 
 # Install Apache and phpmyadmin:
@@ -575,7 +583,7 @@ From the sensor node it submit 5 data points from the environment with 5 seconds
 
 This manual query can be considered if any issue happens while setup to show temperature values from database, In this query datetime is mentioned as time to be understood by Grafana that it is a time series column
 
-````
+ ````
 SELECT
   datetime AS "time",
   temperature
