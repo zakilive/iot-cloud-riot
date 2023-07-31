@@ -201,6 +201,7 @@ Before you begin, make sure you have the following:
 10. Attach the Internet Gateway to your VPC.
 11. Go to **Route Tables** and configure the route to the Internet Gateway for IPv6 traffic.
 
+[Jump to Index](#index)
 ### Step 3: Launch EC2 Instance with IPv6
 
 1. Go to the AWS Management Console.
@@ -218,7 +219,7 @@ Before you begin, make sure you have the following:
 13. Wait until the instance is up and running and the click “Connect” and enter  the EC2 terminal
 14. Continue with [Execution of commands on EC2](#execution-of-commands-on-ec2)
 
-
+[Jump to Index](#index)
 ### Creating new keypair(.pemfile)<a name="creation-of-new-key-pair"></a>
 1. Create Key Pair:
 Click on the "Create Key Pair" button at the top of the Key Pairs page.
@@ -237,6 +238,7 @@ For security reasons, you might want to set the appropriate permissions for the 
     ```
 This will restrict read and write permissions for the file owner only.
 
+[Jump to Index](#index)
 ### Execution of commands on EC2
 On EC2 Instance run the following commands:
 ``` bash
@@ -258,7 +260,7 @@ Navigate to the directory where you save the keypair and use the key pair you se
   ``` bash
   ssh -i MQTT_BROKER.pem ubuntu@2600:1f18:6929:5505:5ea4:f15c:41fb:1872
   ```
-
+[Jump to Index](#index)
 ## Mosquitto RSMB (Really Small Message Broker) Broker:
 The data transfer from Sensor node to AWS will be possible with port 1885 which is MQTT-SN port. Another port 1886 is MQTT port which is listened by the [mqtt_subscriber_client](#subscriber)
 
@@ -291,6 +293,7 @@ To build RSMB, follow these steps:
    ```
 this configuration file is also available in `utils/RSMBconfig.conf`
 
+[Jump to Index](#index)
 ### Running RSMB<a name="mosquitto"></a>
 
 1. SSH into your EC2 instance:
