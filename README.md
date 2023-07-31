@@ -62,13 +62,13 @@ git clone https://github.com/RIOT-OS/RIOT.git
 ```
 [Jump to Index](#index)
 ### Clone/download our project repository<a name="project_repo"></a>
-1st step,
+First step,
 Clone/download our project repository using
 ```bash
 git clone https://github.com/zakilive/iot-cloud-riot.git
 ```
 
-2nd step,
+Second step,
 Open the cloned repository, open `IOT_final_project` and copy `temperature_mqttsn` from there to Riot OS `example` folder then get inside the folder and flash it with nrf52840dk board
 
 [Jump to Index](#index)
@@ -85,6 +85,11 @@ GND cable -> on GND port of the board
 
 ### Flashing the Sensor Node:
 
+Find the USB-port to which the NRFDK52840 board has been connected.
+     ``` bash
+     make list-ttys 
+    ```
+
 Move to this directory from GUI in riot os examples/temperature_mqttsn folder, right click and find
 
 > Open in Terminal
@@ -97,7 +102,7 @@ For normal flash:
 `PORT=/dev/ttyACM1 BOARD=nrf52840dk make term flash`
 
 It works as sensor node, so we start the application from here using:
-Where `start aws_ipv6_address broker_port`
+ `start aws_ipv6_address broker_port`
 For our project it is:
 `start 2600:1f18:6929:5505:5ea4:f15c:41fb:1872 1885`
 `
@@ -152,7 +157,7 @@ Follow the steps below to build and run the GNRC Border Router Example:
    Add the following parameters in makefile of gnrc_border router:
    `DEFAULT_CHANNEL := 23  # changed default channel to 23`
 
-   and enabling network connectivity in dongle
+   and enabling network connectivity in dongle. Make the following changes to make file from example directory  gnrc_border_router.
    ```
    UPLINK ?= cdc-ecm
    PREFIX_CONF := uhcp`
@@ -320,12 +325,13 @@ sudo kill 904
 [Jump to Index](#index)
 ### Start MQTT message subscriber client<a name="subscriber"></a>
   Go to this directory form the cloned project, `IOT_final_project
-/mqtt_subscriber_client_with_sql.py` and SCP with this command from local to ec2:
+/mqtt_subscriber_client_with_sql.py` and use SCP command to copy the file  from local to Ec2 instance:
 
 `scp -i MQTT_BROKER.pem ~/Downloads/IOT_final_project
 /mqtt_subscriber_client_with_sql.py ubuntu@[2600:1f18:6929:5505:5ea4:f15c:41fb:1872]:/home/ubuntu/`
 
-Start the application with ```python3 mqtt_subscriber_client_with_sql.py```
+Start the application with 
+```python3 mqtt_subscriber_client_with_sql.py```
 
 ### Regarding the MQTT message subscriber client
   1. It saves temperature data and datetime in the database
@@ -351,7 +357,7 @@ Start MySQL:
 Ensure MySQL starts automatically when the system boots:
 `sudo systemctl enable mysql`
 
-check the status of the MySQL service:
+Check the status of the MySQL service:
 `sudo systemctl status mysql`
 
 Login to mysql after install from terminal:<a name="mysql_pass"></a>
@@ -362,7 +368,7 @@ password: admin
 
 mysql> `mysql -u root -p`
 
-Put the below SQL command for creation of database, tables and coloumns for our project from mysql terminal:
+Put the below SQL command for creation of database, tables and columns for our project from MySQL terminal:
 
 ````
 CREATE DATABASE `TemperatureReadings`;
@@ -376,9 +382,9 @@ CREATE TABLE `Readings` (
 [Jump to Index](#index)
 
 # Install Apache and phpmyadmin:
-For easy database handling we can use also *phpmyadmin* instead of terminal, *phpmyadmin* is a web based database management platform.
+For easy database handling we can use also *PHPMyAdmin* instead of terminal, *PHPMyAdmin* is a web based database management platform.
 
-Setup with apache in port 8080 and make aws security group rules to open this. We use port 8080 for Apache webserver as we used reverse proxy as nginx and it can use port 80, so we kept it free.
+Setup with apache in port 8080 and make AWS security group rules to open this. We use port 8080 for Apache web server as we used reverse proxy as nginx and it can use port 80, so we kept it free.
 
 steps to install Apache, PHP, and PHPMyAdmin and configure Apache to run on port 8080:
 
@@ -393,7 +399,7 @@ Install Apache and PHP using the following command:
 `sudo apt install apache2 php libapache2-mod-php`
 
 Step 3: Change Apache Port to 8080
-By default, Apache listens on port 80. We'll change this to 8080. First, open the ports.conf file with a text editor:
+By default, Apache listens on port 80. We'll change this to 8080. First, open the ports .conf file with a text editor:
 
 `sudo nano /etc/apache2/ports.conf`
 `
@@ -418,15 +424,15 @@ PHPMyAdmin is now installed, but to access it, you need to configure Apache to r
 
 `sudo ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin`
 
-Access phpmyadmin from browser after installation:http://54.175.129.183:8080/phpmyadmin
+Access PHPMyAdmin from browser after installation:http://54.175.129.183:8080/phpmyadmin
 
-userid and password is same as mysql root password mentioned [above](#mysql_pass)
+User ID and password is same as mysql root password mentioned [above](#mysql_pass)
 
 After login there, the table for temperature on different date times can be seen
 
 [Jump to Index](#index)
 ## Troubleshoots for Timezone Mismatch in Grafana with Database:
-After the installation and setup of Grafana to read temperature from MySQL database grafana time was showing 2 hours more than what time is saved in the database, this issue we tried to fix it from database time, systeme time as well as in Grafana's own general setting time but we found by research it is Grafana's own issue and not in our hand.
+After the installation and setup of Grafana to read temperature from MySQL database grafana time was showing 2 hours more than what time is saved in the database, this issue we tried to fix it from database time, system time as well as in Grafana's own general setting time but we found by research it is Grafana's own issue and not in our hand.
 
 These are the steps that we followed to fix it,
 The EC2 instance timezone was set to +00:00 so we changed the timezone to Europe as we are from Frankfurt in Berlin timezone. This steps can be followed to set to another timezone.
@@ -439,7 +445,7 @@ SELECT @@global.time_zone;
 ## Research Findings and For Possible Issue Fix of Database:
 DHT11 sensor only send integer type value DHT11 datasheet details can be found so that our database is also designed to save integer value. So no floating point values for saving temperature.
 
-Delay of 5 seconds for sending data was needful otherwise it was showing Duplicate entry for the same datetime with MySQL database during save.
+Delay of 5 seconds for sending data was needful otherwise it was showing duplicate entry for the same datetime with MySQL database while saving it.
 
 Some logs:
 ```
@@ -605,7 +611,7 @@ The nRF52840dk board publishes the collected sensor data as MQTT-SN messages usi
 
 ### Safety Critical Systems LED light blink based on temperature
 
-The LED light included in the project is red color and it can blink to save from potential hazards if the temperature gets high above a threshold value. In our project we have made this threshold more than 22 degree that means 23 or more degree celsius temperature in the environment of sensor node the light will blink each time while passing the temperature value to EC2 instance. In our project the sensor data passes 5 times and in 5 sec intervals to EC2 instance and disconnects afterwhile from Broker.
+The LED light included in the project is red color and it can blink to save from potential hazards if the temperature gets high above a threshold value. In our project we have made this threshold more than 22 degree that means 23 or more degree celsius temperature in the environment of sensor node the light will blink each time while passing the temperature value to EC2 instance. In our project the sensor data passes 5 times and in 5 seconds interval to EC2 instance and disconnects after a while from Broker.
 
 This scenario can be modified according to needs and can be used in commonly found in domains like aerospace, automotive, medical devices, etc., where safety is of utmost importance which needs some safety standards.
 
@@ -657,7 +663,7 @@ ip neigh
 ifconfig
 ```
 
-In some cases check with Wireshark network tool for finding if the each network nodes can be reached properly to other node or can be ping with googl.com ipv6 address
+In some cases check with Wireshark network tool for finding if the each network nodes can be reached properly to other node or can be ping with google.com ipv6 address
 
 Possible Fix:
 - Always run broker first otherwise broker there will
@@ -673,3 +679,4 @@ from local to ec2:
 `scp -i MQTT_BROKER.pem ~/Downloads/ ubuntu@[aws_ec2_ipv6]:/home/ubuntu/`
 
 [Jump to Index](#index)
+
