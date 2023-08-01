@@ -3,7 +3,7 @@ Summer Semester 2023; Master of Science; Frankfurt University of Applied Science
 
 Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 
-# Demonstration
+# Project Showcase Video:
 [Google Drive link to the video]()
 
 # Screenshots
@@ -73,6 +73,8 @@ git clone https://github.com/zakilive/iot-cloud-riot.git
 Second step,
 Open the cloned repository, open `IOT_final_project` and copy `temperature_mqttsn` from there to Riot OS `example` folder then get inside the folder and flash it with nrf52840dk board
 
+We need Makefile and main.c files together to run any RIOT application. `temperature_mqttsn` folder consists of this.
+
 [Jump to Index](#index)
 ## Set up NRFDK52840dk Board(Sensor Node):<a name="sensor_node"></a>
 In NRFDK52840dk board components connection,
@@ -88,7 +90,7 @@ GND cable -> on GND port of the board
 ### Flashing the Sensor Node:
 
 Find the USB-port to which the NRFDK52840 board has been connected using.
-     ``` bash
+     ```
      sudo ls -l /dev/ttyACM*
      ```
 
@@ -155,7 +157,6 @@ Follow the steps below to build and run the GNRC Border Router Example:
       sudo sysctl -w net.ipv6.conf.all.forwarding=1
    ```
 
-
    Add the following parameters in makefile of gnrc_border router:
    `DEFAULT_CHANNEL := 23  # changed default channel to 23`
 
@@ -171,6 +172,7 @@ Follow the steps below to build and run the GNRC Border Router Example:
      ``` bash
      make list-ttys 
    ```
+   or ```sudo ls -l /dev/ttyACM*```
 6. Building GNRC Border example.
     ``` bash
     PORT=/dev/ttyACM3 IPV6_PREFIX=2001:470:7347:c401::/64 BOARD=nrf52840dongle make term flash 
@@ -247,13 +249,13 @@ For security reasons, you might want to set the appropriate permissions for the 
 This will restrict read and write permissions for the file owner only.
 
 [Jump to Index](#index)
-
 ### Creation of security rules
 EC2->Security Groups->sg-0d6bd7a320d9b311c-launch-wizard-4->Edit inbound rules
 Here are the some of security rules created for this project:
 <img src="project_screenshots/security1.jpeg" alt="Security rules"/>
 <img src="project_screenshots/security2.jpeg" alt="Security rules"/>
 
+[Jump to Index](#index)
 ### Execution of commands on EC2
 On EC2 Instance run the following commands:
 
@@ -269,7 +271,7 @@ sudo apt-get install mosquitto
 sudo apt-get install mosquitto-clients
 sudo apt install awscli
 ```
-
+[Jump to Index](#index)
 ### Accessing the EC2 Instance from local machine
 The access can be happened with port 22, as we have used AWS learning account for this we needed to open this port for ipv6 to use it.
 
@@ -295,7 +297,6 @@ To build RSMB, follow these steps:
    git clone https://github.com/eclipse/mosquitto.rsmb.git
    cd mosquitto.rsmb/rsmb/src
    ```
-
 
 2. Create a configuration file. Save the following to `RSMBconfig.conf\:
    ``` 
@@ -346,7 +347,6 @@ sudo kill 904
 Start the application with:
 ```
 python3 mqtt_subscriber_client_with_sql.py
-
 ```
 
 ### Regarding the MQTT message subscriber client
@@ -395,14 +395,14 @@ CREATE TABLE `Readings` (
   PRIMARY KEY (`datetime`)
 )
  ````
-[Jump to Index](#index)
 
+[Jump to Index](#index)
 # Install Apache and phpmyadmin:
 For easy database handling we can use also *PHPMyAdmin* instead of terminal, *PHPMyAdmin* is a web based database management platform.
 
 Setup with apache in port 8080 and make AWS security group rules to open this. We use port 8080 for Apache web server as we used reverse proxy as nginx and it can use port 80, so we kept it free.
 
-steps to install Apache, PHP, and PHPMyAdmin and configure Apache to run on port 8080:
+Steps to install Apache, PHP, and PHPMyAdmin and configure Apache to run on port 8080,
 
 Step 1: Update Package List
 Open a terminal and update the package list to ensure you have the latest information about available packages. Enter the following command:
@@ -458,6 +458,7 @@ Set to Berlin timezone:
 SET GLOBAL time_zone = '+02:00';
 SELECT @@global.time_zone;
  ```
+
 ## Research Findings and For Possible Issue Fix of Database:
 DHT11 sensor only send integer type value DHT11 datasheet details can be found so that our database is also designed to save integer value. So no floating point values for saving temperature.
 
@@ -660,6 +661,10 @@ Grafana is installed on the EC2 instance in order to visualize sensor data saved
 Users can access Grafana's web interface using their web browsers and following the EC2 instance's public IPv4 address. The Grafana interface visualizes sensor data in real time, allowing for data analysis and decision-making.
 
 [Jump to Index](#index)
+### Bonus Small Application:
+
+You will get several nightly build applications in `bonus_small_application` section that we produced during different stage of this project lifecycle. We made it during several issue fixes till final project submission. These are working and included in this repository too.
+
 ### Basic Troubleshoots:<a name="troubleshoots"></a>
 
 ## Troubleshoots while Replicate:
