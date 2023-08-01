@@ -82,11 +82,11 @@ We need Makefile and main.c files together to run any RIOT application. `tempera
 
 ### Connect all the components(LED Light, DHT11 Temperature Sensor) with Sensor:
 In nrf52840dk board components connection,
-LED Light installation:
+- LED Light installation:
 Positive longer side -> on P0.04 Port of the board
 Negative shorter side -> on GND port of the board
 
-DHT 11 Temperature Sensor Installation:
+- DHT 11 Temperature Sensor Installation:
 DHT11 Signal cable  -> on P0.03 port of the board
 Positive Cable -> on 5V port of the board
 GND cable -> on GND port of the board
