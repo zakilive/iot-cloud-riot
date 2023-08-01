@@ -674,10 +674,11 @@ You will get several nightly build applications in `bonus_small_application` sec
 2023-07-23 18:31:11,970 # error: unable to obtain topic ID
 ```
 
-Possible Fix:
+**Possible Fix:**
 - Some internet provider close packet forwarding with router
 - AWS learner lab close in 5-10 minutes duration so need to restart it
 
+[Jump to Index](#index)
 ### Network connection troubleshoots between sensor nodes and border router or global ip:
 Network propagation check from Riot OS application terminal:
 
@@ -688,7 +689,7 @@ ifconfig
 
 In some cases check with Wireshark network tool for finding if the each network nodes can be reached properly to other node or can be ping with google.com ipv6 address
 
-Possible Fix:
+**Possible Fix:**
 - Always run broker first otherwise broker there will
 - If using from virtual machine, and ethernet connection is lost frequently then need to disconnect and connect again the internet connection, sometimes also need VM restart
 
@@ -702,4 +703,3 @@ from local to ec2:
 `scp -i MQTT_BROKER.pem ~/Downloads/ ubuntu@[aws_ec2_ipv6]:/home/ubuntu/`
 
 [Jump to Index](#index)
-
