@@ -327,7 +327,7 @@ Navigate to the directory where you save the keypair and use the key pair you se
 [Jump to Index](#index)
 ### Elastic IP Creation:
 Each time login to the EC2 instance IP got changes, so changed the IP to Elastic IP/Fixed IPV4 which does not change even after closing the instance.
-Here is the grafana server login for our project: http://54.175.129.183:3000
+Here is the Elasitc IP for our project: http://54.175.129.183
 
 ### To create Elastic IP:
 - In the EC2 Dashboard, find and click on "Elastic IPs" under the "Network & Security" category in the left navigation pane.
@@ -606,6 +606,8 @@ Open a web browser and navigate to http://your_public_ip of EC2 instance: 3000. 
 2.  Follow the prompts to change the password.
 
 If everything is set up correctly, you should be able to access and use Grafana through the NGINX reverse proxy.
+
+Here is the grafana server login for our project: http://54.175.129.183:3000
 
 For our project grafana login Credentials, username: admin, password: root123
 
