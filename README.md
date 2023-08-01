@@ -665,18 +665,20 @@ Users can access Grafana's web interface using their web browsers and following 
 
 You will get several nightly build applications in `bonus_small_application` section that we produced during different stage of this project lifecycle. We made it during several issue fixes till final project submission. These are working and included in this repository too.
 
-### Basic Troubleshoots:<a name="troubleshoots"></a>
+# Basic Troubleshoots:<a name="troubleshoots"></a>
 
-## Troubleshoots while Replicate:
+### Troubleshoots while Replicate:
 **if broker connection lost :**
+```
 2023-07-24 02:15:49,752 # error: unable to disconnect
 2023-07-23 18:31:11,970 # error: unable to obtain topic ID
+```
 
 Possible Fix:
 - Some internet provider close packet forwarding with router
 - AWS learner lab close in 5-10 minutes duration so need to restart it
 
-## Network connection troubleshoots between sensor nodes and border router or global ip:
+### Network connection troubleshoots between sensor nodes and border router or global ip:
 Network propagation check from Riot OS application terminal:
 
 ```
@@ -690,7 +692,7 @@ Possible Fix:
 - Always run broker first otherwise broker there will
 - If using from virtual machine, and ethernet connection is lost frequently then need to disconnect and connect again the internet connection, sometimes also need VM restart
 
-## For SCP in IPV6:
+### For SCP in IPV6:
 For doing SCP here mentioned command can be used:
 
 from ec2 to local:
