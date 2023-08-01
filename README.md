@@ -304,15 +304,10 @@ Here are the some of security rules created for this project:
 On EC2 Instance run the following commands:
 
 ``` bash
-#Update package list and install paho Mqtt
+#Update package list and install paho Mqtt and aws client
 sudo apt update
 sudo apt install python3-pip
 pip3 install paho-mqtt
-
-
-#Install the Mosquitto broker, Mosquitto clients and the aws cli
-sudo apt-get install mosquitto
-sudo apt-get install mosquitto-clients
 sudo apt install awscli
 ```
 [Jump to Index](#index)
