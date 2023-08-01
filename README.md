@@ -214,7 +214,7 @@ Follow the steps below to build and run the GNRC Border Router Example:
 
 Before you begin, make sure you have the following:
 
-- An AWS account
+- Any AWS account, for our project we have used AWS Academy Learner Lab student account
 - AWS CLI installed and configured with appropriate permissions
 
 ### Step 1: Create VPC with IPv6
@@ -315,10 +315,17 @@ Navigate to the directory where you save the keypair and use the key pair you se
 Each time login to the EC2 instance IP got changes, so changed the IP to Elastic IP/Fixed IPV4 which does not change even after closing the instance.
 Here is the grafana server login for our project: http://54.175.129.183:3000
 
+### To create Elastic IP:
+- In the EC2 Dashboard, find and click on "Elastic IPs" under the "Network & Security" category in the left navigation pane.
+- On the Elastic IPs page, click the "Allocate Elastic IP address" button at the top of the page.
+- In the prompt choose the Network Border Group and , Select "IPv4" and click "Allocate."
+- AWS will now allocate an Elastic IP address, and associate it with an EC2 instance which is used for this project by clicking - "Associate Elastic IP address" and selecting instance id
+
+[Jump to Index](#index)
 ## Setup Mosquitto RSMB (Really Small Message Broker) Broker:<a name="mosquitto_build"></a>
 The data transfer from Sensor node to AWS will be possible with port 1885 which is MQTT-SN port. Another port 1886 is MQTT port which is listened by the [mqtt_subscriber_client](#subscriber)
 
-As we have used AWS Academy Learning account, so we needed to open these ports for ipv6.
+As we have used AWS Academy Learner Lab student account, so we needed to open these ports for ipv6.
 
 RSMB is a lightweight MQTT and MQTT-SN capable broker developed by Eclipse. We used this in our project.
 
