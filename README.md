@@ -129,6 +129,9 @@ nrfjprog --family nRF52 --eraseall
 or
 # to recover access in board
 nrfjprog --family nRF52 --recover
+
+# to enable pin reset in board
+nrfjprog --pinreset enable
 ```
 The sensor node recognizes as J-Link or SEGGER in the system.
 can also check with `sudo dmesg` if it is really found
@@ -156,7 +159,9 @@ to get temperature.
     nmtui
    ```
 [Jump to Index](#index)
-## Setup gnrc_border-router:<a name="gnrc_border-router"></a>
+## Setup gnrc_border-router inside nrf52840 dongle:<a name="gnrc_border-router"></a>
+
+First need to connect nrf52840 dongle in USB and then,
 
 Follow the steps below to build and run the GNRC Border Router Example:
 
@@ -207,6 +212,10 @@ Follow the steps below to build and run the GNRC Border Router Example:
     ``` bash
     PORT=/dev/ttyACM3 IPV6_PREFIX=2001:470:7347:c401::/64 BOARD=nrf52840dongle make term flash 
    ```
+- During flashing if any issue arise there is a small reset button in dongle that can be used to reset
+
+- If the border router software is running successfully from terminal it needs to keep running for whole project to pass data from sensor node.
+
 [Jump to Index](#index)
 ## Setup EC2 instance with IPV6 address<a name="aws_ec2_setup"></a>
 
