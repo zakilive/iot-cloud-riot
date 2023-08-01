@@ -76,8 +76,8 @@ Open the cloned repository, open `IOT_final_project` and copy `temperature_mqtts
 We need Makefile and main.c files together to run any RIOT application. `temperature_mqttsn` folder consists of this.
 
 [Jump to Index](#index)
-## Set up NRFDK52840dk Board(Sensor Node):<a name="sensor_node"></a>
-In NRFDK52840dk board components connection,
+## Set up nrf52840dk Board(Sensor Node):<a name="sensor_node"></a>
+In nrf52840dk board components connection,
 LED Light installation:
 Positive longer side -> on P0.04 Port of the board
 Negative shorter side -> on GND port of the board
@@ -89,7 +89,7 @@ GND cable -> on GND port of the board
 
 ### Flashing the Sensor Node:
 
-Find the USB-port to which the NRFDK52840 board has been connected using.
+Find the USB-port to which the nrf52840dk board has been connected using.
      ```
      sudo ls -l /dev/ttyACM*
      ```
@@ -121,7 +121,7 @@ To solve several issues this dependency needs to install:
 #related library for debugging
 `sudo apt install gcc-arm-none-eabi`
 
-# Install nrf-command-line-tools package
+### Install nrf-command-line-tools package
 ```
 nrf-command-line-tools_10.21.0_amd64.deb
 sudo dpkg -i nrf-command-line-tools_10.21.0_amd64.deb
