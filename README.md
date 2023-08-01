@@ -106,22 +106,9 @@ or from any terminal move directly to `examples/temperature_mqttsn` folder and p
 
 Here openocd is needful when normal flash does not work
 For normal flash:
-`PORT=/dev/ttyACM1 BOARD=nrf52840dk make term flash`
+`PORT=/dev/ttyACM1 BOARD=nrf52840dk make term flash
 
-### Start Application software from nrf52840dk board
-It works as sensor node, so we start the application from here using:
- `start aws_ipv6_address broker_port`
-For our project it is:
-`start 2600:1f18:6929:5505:5ea4:f15c:41fb:1872 1885`
-`
-User case scenario for running the application:
-It sends 5 periodic data from sensor node to AWS EC2 instance MQTT-SN broker, LED light will also blink 5 times for successful temperature getting
-
-In case of failure to connect, error message will be shown and LED light will also blink 5 times for attempt
-to get temperature.
-
-
-To solve several issues these dependencies needs to install:
+To solve several issues during flashing these dependencies needs to install:
 
 #related library for debugging
 `sudo apt install gcc-arm-none-eabi`
@@ -141,9 +128,21 @@ or
 # to recover access in board
 nrfjprog --family nRF52 --recover
 ```
-
 The sensor node recognizes as J-Link or SEGGER in the system.
 can also check with `sudo dmesg` if it is really found
+
+[Jump to Index](#index)
+### Start Application software from nrf52840dk board
+It works as sensor node, so we start the application from here using:
+ `start aws_ipv6_address broker_port`
+For our project it is:
+`start 2600:1f18:6929:5505:5ea4:f15c:41fb:1872 1885`
+`
+User case scenario for running the application:
+It sends 5 periodic data from sensor node to AWS EC2 instance MQTT-SN broker, LED light will also blink 5 times for successful temperature getting
+
+In case of failure to connect, error message will be shown and LED light will also blink 5 times for attempt
+to get temperature.
 
 [Jump to Index](#index)
 ## Establish a WireGuard VPN tunnel:<a name="wireguard"></a>
