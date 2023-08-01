@@ -4,7 +4,7 @@ Summer Semester 2023; Master of Science; Frankfurt University of Applied Science
 Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 
 # Project Showcase Video:
-[Google Drive link to the video]()
+[Google Drive link to the Video]()
 
 # Screenshots
 <img src="project_screenshots/gnrc_border_router.png" alt="gnrc_border_router" width="500"/>
@@ -107,7 +107,7 @@ or from any terminal move directly to `examples/temperature_mqttsn` folder and p
 
 Here openocd is needful when normal flash does not work
 For normal flash:
-`PORT=/dev/ttyACM1 BOARD=nrf52840dk make term flash
+`PORT=/dev/ttyACM1 BOARD=nrf52840dk make term flash`
 
 To solve several issues during flashing these dependencies needs to install:
 ```
@@ -139,7 +139,7 @@ It works as sensor node, so we start the application from here using:
  `start aws_ipv6_address broker_port`
 For our project it is:
 `start 2600:1f18:6929:5505:5ea4:f15c:41fb:1872 1885`
-`
+
 User case scenario for running the application:
 It sends 5 periodic data from sensor node to AWS EC2 instance MQTT-SN broker, LED light will also blink 5 times for successful temperature getting
 
@@ -193,7 +193,7 @@ Follow the steps below to build and run the GNRC Border Router Example:
    and enabling network connectivity in dongle. Make the following changes to make file from example directory  gnrc_border_router.
    ```
    UPLINK ?= cdc-ecm
-   PREFIX_CONF := uhcp`
+   PREFIX_CONF := uhcp
     ```
 
    this configuration file is also available in `utils/Gnrc_makefile`
@@ -339,7 +339,7 @@ To build RSMB, follow these steps:
    cd mosquitto.rsmb/rsmb/src
    ```
 
-2. Create a configuration file. Save the following to `RSMBconfig.conf\:
+2. Create a configuration file. Save the following to RSMBconfig.conf\:
    ``` 
    # add some debug output
    trace_output protocol
@@ -454,7 +454,7 @@ Step 3: Change Apache Port to 8080
 By default, Apache listens on port 80. We'll change this to 8080. First, open the ports .conf file with a text editor:
 
 `sudo nano /etc/apache2/ports.conf`
-`
+
 Look for the line that says Listen 80 and change it to Listen 8080.
 
 Save and close the file (press Ctrl+O, then Enter, and Ctrl+X).
