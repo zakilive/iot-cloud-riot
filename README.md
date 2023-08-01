@@ -210,14 +210,14 @@ Follow the steps below to build and run the GNRC Border Router Example:
 [Jump to Index](#index)
 ## Setup EC2 instance with IPV6 address<a name="aws_ec2_setup"></a>
 
-## Prerequisites
+### Prerequisites
 
 Before you begin, make sure you have the following:
 
 - An AWS account
 - AWS CLI installed and configured with appropriate permissions
 
-## Step 1: Create VPC with IPv6
+### Step 1: Create VPC with IPv6
 
 1. Go to the AWS Management Console.
 2. Navigate to the **VPC Dashboard**.
@@ -226,7 +226,7 @@ Before you begin, make sure you have the following:
 5. Configure other VPC settings as needed.
 6. Click on **Create VPC**.
 
-## Step 2: Configure Subnets and Internet Gateway
+### Step 2: Configure Subnets and Internet Gateway
 
 1. Go to the AWS Management Console.
 2. Navigate to the **VPC Dashboard**.
@@ -241,7 +241,7 @@ Before you begin, make sure you have the following:
 11. Go to **Route Tables** and configure the route to the Internet Gateway for IPv6 traffic.
 
 [Jump to Index](#index)
-## Step 3: Launch EC2 Instance with IPv6
+### Step 3: Launch EC2 Instance with IPv6
 
 1. Go to the AWS Management Console.
 2. Navigate to the **EC2 Dashboard**.
@@ -260,7 +260,7 @@ Before you begin, make sure you have the following:
 14. Continue with [Execution of commands on EC2](#execution-of-commands-on-ec2)
 
 [Jump to Index](#index)
-## Creating new keypair(.pemfile)<a name="creation-of-new-key-pair"></a>
+### Creating new keypair(.pemfile)<a name="creation-of-new-key-pair"></a>
 1. Create Key Pair:
 Click on the "Create Key Pair" button at the top of the Key Pairs page.
 
@@ -279,14 +279,14 @@ For security reasons, you might want to set the appropriate permissions for the 
 This will restrict read and write permissions for the file owner only.
 
 [Jump to Index](#index)
-## Creation of security rules
+### Creation of security rules
 EC2->Security Groups->sg-0d6bd7a320d9b311c-launch-wizard-4->Edit inbound rules
 Here are the some of security rules created for this project:
 <img src="project_screenshots/security1.jpeg" alt="Security rules"/>
 <img src="project_screenshots/security2.jpeg" alt="Security rules"/>
 
 [Jump to Index](#index)
-## Execution of commands on EC2
+### Execution of commands on EC2
 On EC2 Instance run the following commands:
 
 ``` bash
@@ -302,7 +302,7 @@ sudo apt-get install mosquitto-clients
 sudo apt install awscli
 ```
 [Jump to Index](#index)
-## Accessing the EC2 Instance from local machine
+### Accessing the EC2 Instance from local machine
 The access can be happened with port 22, as we have used AWS learning account for this we needed to open this port for ipv6 to use it.
 
 Navigate to the directory where you save the keypair and use the key pair you selected during instance launch to SSH into the EC2 instance with its IPv6 address.
@@ -311,7 +311,7 @@ Navigate to the directory where you save the keypair and use the key pair you se
   ssh -i MQTT_BROKER.pem ubuntu@2600:1f18:6929:5505:5ea4:f15c:41fb:1872
   ```
 [Jump to Index](#index)
-## Elastic IP Creation:
+### Elastic IP Creation:
 Each time login to the EC2 instance IP got changes, so changed the IP to Elastic IP/Fixed IPV4 which does not change even after closing the instance.
 Here is the grafana server login for our project: http://54.175.129.183:3000
 
