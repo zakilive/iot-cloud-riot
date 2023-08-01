@@ -90,7 +90,7 @@ Negative shorter side -> on GND port of the board
 
 - DHT 11 Temperature Sensor Installation:
  ```
-DHT11 Signal cable  -> on P0.03 port of the board
+DHT11 signal/data cable  -> on P0.03 port of the board
 Positive Cable VCC -> on 5V port of the board
 GND cable -> on GND port of the board
  ```
