@@ -46,12 +46,14 @@ The project is open source and free to contribute, replicate or distribute under
 - [Basic Troubleshoots](#troubleshoots)
 
 # Details about the steps to reproduce the project:
+
 ### Components and Boards<a name="components"></a>
-DHT11 Sensor
-LED Light
-Female to Male cables
-Nrf52840dk board
-Nrf52840dongle
+- DHT11 Sensor
+- LED Light
+- Female to Male cables
+- Nrf52840dk board
+- Nrf52840dongle
+
 [Jump to Index](#index)
 ### Clone RIOT OS Repository<a name="riot_os"></a>
 
@@ -85,12 +87,12 @@ GND cable -> on GND port of the board
 
 ### Flashing the Sensor Node:
 
-Find the USB-port to which the NRFDK52840 board has been connected.
+Find the USB-port to which the NRFDK52840 board has been connected using.
      ``` bash
-     make list-ttys 
-    ```
+     sudo ls -l /dev/ttyACM*
+     ```
 
-Move to this directory from GUI in riot os examples/temperature_mqttsn folder, right click and find
+Move to this directory using Linux GUI in Riot OS examples/temperature_mqttsn folder, right click and find
 
 > Open in Terminal
 
@@ -341,8 +343,10 @@ sudo kill 904
 `scp -i MQTT_BROKER.pem ~/Downloads/IOT_final_project
 /mqtt_subscriber_client_with_sql.py ubuntu@[2600:1f18:6929:5505:5ea4:f15c:41fb:1872]:/home/ubuntu/`
 
-Start the application with 
-```python3 mqtt_subscriber_client_with_sql.py
+Start the application with:
+```
+python3 mqtt_subscriber_client_with_sql.py
+
 ```
 
 ### Regarding the MQTT message subscriber client
