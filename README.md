@@ -559,7 +559,7 @@ If everything is set up correctly, you should be able to access and use Grafana 
 
 For our project grafana login Credentials, username: admin, password: root123
 
-[Jump to Index](#index)´
+[Jump to Index](#index)
 ### Setup grafana with Database:<a name="grafana_dashboard"></a>
 Add a Data Source:
 
@@ -601,7 +601,7 @@ LIMIT
 
 - Click Refresh icon to see the updates of fresh temperature saved in the Database
 
-[Jump to Index](#index)´
+[Jump to Index](#index)
 # Knowledgebase:<a name="knowledgebase"></a>
 
 ## How everything works
