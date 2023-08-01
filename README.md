@@ -27,6 +27,7 @@ For conducting this research project Oracle VirtualBox VM with UBUNTU OS, as wel
 The project is open source and free to contribute, replicate or distribute under LGPLv3 License.
 
 # Index: Steps to replicate this project:<a name="index"></a>
+Following these below 13 steps you can reproduce our project:
 
 1. [Components and Boards](#components)
 2. [Clone RIOT OS Repository](#riot_os)
@@ -36,7 +37,7 @@ The project is open source and free to contribute, replicate or distribute under
 6. [In AWS Setup EC2 instance with IPV6 address](#aws_ec2_setup)
 7. [Mosquitto RSMB MQTT-SN Broker needs to run in AWS](#mosquitto)
 8. [Start MQTT message subscriber client in AWS](#subscriber)
-9. [Connect all the components(LED Light, DHT11 Temperature Sensor) with Sensor Node(nrf52840dk) and start Application software from nrf52840dk board](#sensor_node)
+9. [Set up Sensor Node nrf52840dk Board, Connect all the components(LED Light, DHT11 Temperature Sensor) with Sensor Node(nrf52840dk), Flash the Application Software and Start Application software from nrf52840dk board](#sensor_node)
 11. [MySQL Database creation](#mysql)
 12. [Grafana Installation with NGINX and start server](#grafana_install)
 13. [Login and Setup Grafana with Database and Dashboard to Show Temperature Graf](#grafana_dashboard)
@@ -77,6 +78,8 @@ We need Makefile and main.c files together to run any RIOT application. `tempera
 
 [Jump to Index](#index)
 ## Set up nrf52840dk Board(Sensor Node):<a name="sensor_node"></a>
+
+### Connect all the components(LED Light, DHT11 Temperature Sensor) with Sensor:
 In nrf52840dk board components connection,
 LED Light installation:
 Positive longer side -> on P0.04 Port of the board
@@ -87,24 +90,25 @@ DHT11 Signal cable  -> on P0.03 port of the board
 Positive Cable -> on 5V port of the board
 GND cable -> on GND port of the board
 
-### Flashing the Sensor Node:
+### Flash the Application Software in Sensor Node:
 
 Find the USB-port to which the nrf52840dk board has been connected using.
      ```
      sudo ls -l /dev/ttyACM*
      ```
 
-Move to this directory using Linux GUI in Riot OS examples/temperature_mqttsn folder, right click and find
+Move to this directory using Linux GUI in `examples/temperature_mqttsn` folder of our project directory, right click and find
 
 > Open in Terminal
 
-or from any terminal move directly to examples/temperature_mqttsn folder and put this command below:
+or from any terminal move directly to `examples/temperature_mqttsn` folder and put this command below:
 `PORT=/dev/ttyACM1 BOARD=nrf52840dk make term flash PROGRAMMER=openocd`
 
 Here openocd is needful when normal flash does not work
 For normal flash:
 `PORT=/dev/ttyACM1 BOARD=nrf52840dk make term flash`
 
+### Start Application software from nrf52840dk board
 It works as sensor node, so we start the application from here using:
  `start aws_ipv6_address broker_port`
 For our project it is:
@@ -117,11 +121,12 @@ In case of failure to connect, error message will be shown and LED light will al
 to get temperature.
 
 
-To solve several issues this dependency needs to install:
+To solve several issues these dependencies needs to install:
+
 #related library for debugging
 `sudo apt install gcc-arm-none-eabi`
 
-### Install nrf-command-line-tools package
+Install nrf-command-line-tools package
 ```
 nrf-command-line-tools_10.21.0_amd64.deb
 sudo dpkg -i nrf-command-line-tools_10.21.0_amd64.deb
