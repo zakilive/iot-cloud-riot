@@ -4,7 +4,7 @@ Summer Semester 2023; Master of Science; Frankfurt University of Applied Science
 Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 
 # Project Showcase Video:
-[Google Drive link to the Video]()
+[Google Drive link to the Video](https://drive.google.com/file/d/1pX-w-Hf0toAT-fGd-_M2f_wZ8VdnbESR/view?usp=drive_link)
 
 # Screenshots
 <img src="project_screenshots/gnrc_border_router.png" alt="gnrc_border_router" width="500"/>
@@ -404,6 +404,13 @@ python3 mqtt_subscriber_client_with_sql.py
   2. Show temperature data from broker in real time that published from sensor node
   3. Show updates during saving data in database
 
+We have used paho mqtt python library for this. Inside this file MQTT broker details is mentioned for our Project but it can be changed according to needs:
+```
+broker_address = "ec2_ipv6"
+broker_port = ec2_broker_port
+topic = "same_topic_from_sensor_node"
+```
+
 [Jump to Index](#index)
 # MySQL Database Creation:<a name="mysql"></a>
 Install MySQL:
@@ -420,6 +427,8 @@ Ensure MySQL starts automatically when the system boots:
 
 Check the status of the MySQL service:
 `sudo systemctl status mysql`
+
+Mysql usually installed and listening on port 3306 by default. It also needs to open in AWS security group.
 
 Login to mysql after install from terminal:<a name="mysql_pass"></a>
 `sudo mysql`
