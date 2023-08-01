@@ -116,6 +116,30 @@ It sends 5 periodic data from sensor node to AWS EC2 instance MQTT-SN broker, LE
 In case of failure to connect, error message will be shown and LED light will also blink 5 times for attempt
 to get temperature.
 
+
+To solve several issues this dependency needs to install:
+#related library for debugging
+`sudo apt install gcc-arm-none-eabi`
+
+# Install nrf-command-line-tools package
+```
+nrf-command-line-tools_10.21.0_amd64.deb
+sudo dpkg -i nrf-command-line-tools_10.21.0_amd64.deb
+```
+Before flashing it was needed to unlock the board, also if it becomes unresponsive or enters an unusable state:
+For nRF52 devices using these commands:
+
+```
+# to erase software in board
+nrfjprog --family nRF52 --eraseall
+or
+# to recover access in board
+nrfjprog --family nRF52 --recover
+```
+
+The sensor node recognizes as J-Link or SEGGER in the system.
+can also check with `sudo dmesg` if it is really found
+
 [Jump to Index](#index)
 ## Establish a WireGuard VPN tunnel:<a name="wireguard"></a>
 1. Go to the show application tab in ubuntu and search for advanced network connections.
