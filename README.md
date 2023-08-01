@@ -27,7 +27,7 @@ For conducting this research project Oracle VirtualBox VM with UBUNTU OS, as wel
 The project is open source and free to contribute, replicate or distribute under LGPLv3 License.
 
 # Index: Steps to replicate this project:<a name="index"></a>
-Following these below 13 steps you can reproduce our project:
+Following these below 13 steps sequentially you can reproduce our project:
 
 1. [Components and Boards](#components)
 2. [Clone RIOT OS Repository](#riot_os)
@@ -35,9 +35,10 @@ Following these below 13 steps you can reproduce our project:
 4. [Establish a WireGuard VPN tunnel](#wireguard)
 5. [Setup gnrc_border-router and start gnrc border router software from nrf52840 dongle](#gnrc_border-router)
 6. [In AWS Setup EC2 instance with IPV6 address](#aws_ec2_setup)
-7. [Mosquitto RSMB MQTT-SN Broker needs to run in AWS](#mosquitto)
-8. [Start MQTT message subscriber client in AWS](#subscriber)
-9. [Set up Sensor Node nrf52840dk Board, Connect all the components(LED Light, DHT11 Temperature Sensor) with Sensor Node(nrf52840dk), Flash the Application Software and Start Application software from nrf52840dk board](#sensor_node)
+7. [Setup Mosquitto RSMB and Build in AWS](#mosquitto_build)
+8. [Run Mosquitto RSMB MQTT-SN Broker in AWS](#mosquitto_run)
+9. [Start MQTT message subscriber client in AWS](#subscriber)
+10. [Set up Sensor Node nrf52840dk Board, Connect all the components(LED Light, DHT11 Temperature Sensor) with Sensor Node(nrf52840dk), Flash the Application Software and Start Application software from nrf52840dk board](#sensor_node)
 11. [MySQL Database creation](#mysql)
 12. [Grafana Installation with NGINX and start server](#grafana_install)
 13. [Login and Setup Grafana with Database and Dashboard to Show Temperature Graf](#grafana_dashboard)
@@ -48,7 +49,7 @@ Following these below 13 steps you can reproduce our project:
 
 # Details about the steps to reproduce the project:
 
-### Components and Boards<a name="components"></a>
+## Components and Boards<a name="components"></a>
 - DHT11 Sensor
 - LED Light
 - Female to Male cables
@@ -56,7 +57,7 @@ Following these below 13 steps you can reproduce our project:
 - Nrf52840dongle
 
 [Jump to Index](#index)
-### Clone RIOT OS Repository<a name="riot_os"></a>
+## Clone RIOT OS Repository<a name="riot_os"></a>
 
 Need to clone the latest RIOT OS from official github repository
 
@@ -64,7 +65,7 @@ Need to clone the latest RIOT OS from official github repository
 git clone https://github.com/RIOT-OS/RIOT.git
 ```
 [Jump to Index](#index)
-### Clone/download our project repository<a name="project_repo"></a>
+## Clone/download our project repository<a name="project_repo"></a>
 First step,
 Clone/download our project repository using
 ```bash
@@ -109,9 +110,10 @@ For normal flash:
 `PORT=/dev/ttyACM1 BOARD=nrf52840dk make term flash
 
 To solve several issues during flashing these dependencies needs to install:
-
+```
 #related library for debugging
-`sudo apt install gcc-arm-none-eabi`
+sudo apt install gcc-arm-none-eabi
+```
 
 Install nrf-command-line-tools package
 ```
@@ -309,7 +311,7 @@ Navigate to the directory where you save the keypair and use the key pair you se
   ssh -i MQTT_BROKER.pem ubuntu@2600:1f18:6929:5505:5ea4:f15c:41fb:1872
   ```
 [Jump to Index](#index)
-## Mosquitto RSMB (Really Small Message Broker) Broker:
+## Setup Mosquitto RSMB (Really Small Message Broker) Broker:<a name="mosquitto_build"></a>
 The data transfer from Sensor node to AWS will be possible with port 1885 which is MQTT-SN port. Another port 1886 is MQTT port which is listened by the [mqtt_subscriber_client](#subscriber)
 
 As we have used AWS Academy Learning account, so we needed to open these ports for ipv6.
@@ -341,7 +343,7 @@ To build RSMB, follow these steps:
 this configuration file is also available in `utils/RSMBconfig.conf`
 
 [Jump to Index](#index)
-### Running RSMB<a name="mosquitto"></a>
+### Running RSMB<a name="mosquitto_run"></a>
 
 1. SSH into your EC2 instance:
    ``` bash
