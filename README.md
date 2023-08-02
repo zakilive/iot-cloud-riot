@@ -54,7 +54,7 @@ Following these below 13 steps sequentially you can reproduce our project:
 - LED Light
 - Female to Male cables
 - Nrf52840dk board
-- Nrf52840dongle
+- Nrf52840 dongle
 
 [Jump to Index](#index)
 ## Clone RIOT OS Repository<a name="riot_os"></a>
@@ -748,7 +748,7 @@ ifconfig
 In some cases check with Wireshark network tool for finding if the each network nodes can be reached properly to other node or can be ping with google.com ipv6 address
 
 **Possible Fix:**
-- Always run border router first then start sensor node,
+- Always run border router first then start sensor node
 - Ping can be happen only from sensor node, border router cannot ping to global ip
 - If using from virtual machine, and ethernet connection is lost frequently then need to disconnect and connect again the internet connection, sometimes also need VM restart
 
