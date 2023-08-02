@@ -74,11 +74,11 @@ git clone https://github.com/zakilive/iot-cloud-riot.git
 
 - Second step,
 - Open the cloned project repository,
-- Inside `IOT_final_project` copy this `temperature_mqttsn` folder and paster it inside Riot OS `example` folder
+- Inside `IOT_final_project` copy this `temperature_mqttsn` folder and paste it inside Riot OS `example` folder
 
 We need Makefile and main.c files together to flash any RIOT application. `temperature_mqttsn` folder have this both
 
-[For flashing check this sensor node section](#sensor_node)
+[For flashing check this sensor node section](#sensor_node_flash)
 
 [Jump to Index](#index)
 ## Set up nrf52840dk Board(Sensor Node):<a name="sensor_node"></a>
@@ -100,21 +100,18 @@ Positive Cable VCC -> on 5V port of the board
 GND cable -> on GND port of the board
  ```
 - [Component connection setup image can be found on Final presentation google slide #3](#ppt)
-### Flash the Application Software in Sensor Node:
+### Flash the Application Software in Sensor Node:<a name="sensor_node_flash"></a>
 
-Find the USB-port to which the nrf52840dk board has been connected using.
-     ```
-     sudo ls -l /dev/ttyACM*
-     ```
+Find the USB-port to which the nrf52840dk board has been connected using: `sudo ls -l /dev/ttyACM*`
 
-Move to this directory using Linux GUI in `examples/temperature_mqttsn` folder of our project directory, right click and find
+Move to this `examples/temperature_mqttsn` in Riot OS directory, right click and find
 
 > Open in Terminal
 
-or from any terminal move directly to `examples/temperature_mqttsn` folder and put this command below:
+or from any open terminal move directly to `examples/temperature_mqttsn` folder and put this command below:
 `PORT=/dev/ttyACM1 BOARD=nrf52840dk make term flash PROGRAMMER=openocd`
 
-Here openocd is needful when normal flash does not work
+Here openocd is needful when normal flash does not work,
 For normal flash:
 `PORT=/dev/ttyACM1 BOARD=nrf52840dk make term flash`
 
@@ -142,8 +139,7 @@ nrfjprog --family nRF52 --recover
 # to enable pin reset in board
 nrfjprog --pinreset enable
 ```
-The sensor node recognizes as J-Link or SEGGER in the system.
-can also check with `sudo dmesg` if it is really found
+The sensor node recognizes as J-Link or SEGGER in the system. It can also check with `sudo dmesg` from terminal.
 
 [Jump to Index](#index)
 ### Start Application software from nrf52840dk board
