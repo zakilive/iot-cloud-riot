@@ -12,7 +12,7 @@ Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 <img src="project_screenshots/sensor_ to_broker_with_sql.png" alt="sensor_ to_broker_with_sql"/>
 <img src="project_screenshots/grafana_temperature_graf.png" alt="grafana_temperature_graf"/>
 
-# Presentation Slides
+# Presentation Slides<a name="ppt"></a>
    Midterm Presentation on topic 'packages'(Use Chrome for best view):
    [Google Slides link to presentation](https://docs.google.com/presentation/d/1hrXaewqivHxVyLq9jCytpMvTzpTxJ-yI_wwBTIthlHI/edit#slide=id.p)
    
@@ -96,6 +96,7 @@ DHT11 signal/data cable  -> on P0.03 port of the board
 Positive Cable VCC -> on 5V port of the board
 GND cable -> on GND port of the board
  ```
+- [Component connection setup image can be found on Final presentation google slide #3](#ppt)
 ### Flash the Application Software in Sensor Node:
 
 Find the USB-port to which the nrf52840dk board has been connected using.
@@ -733,6 +734,7 @@ You will get several nightly build applications in `bonus_small_application` sec
 **Possible Fix:**
 - Some internet provider close packet forwarding with router
 - AWS learner lab close in 5-10 minutes duration so need to restart it
+- Need to check if RSMB broker is running correctly
 
 [Jump to Index](#index)
 ### Network connection troubleshoots between sensor nodes and border router or global ip:
@@ -746,7 +748,8 @@ ifconfig
 In some cases check with Wireshark network tool for finding if the each network nodes can be reached properly to other node or can be ping with google.com ipv6 address
 
 **Possible Fix:**
-- Always run broker first otherwise broker there will
+- Always run border router first then start sensor node,
+- Ping can be happen only from sensor node, border router cannot ping to global ip
 - If using from virtual machine, and ethernet connection is lost frequently then need to disconnect and connect again the internet connection, sometimes also need VM restart
 
 ### For SCP in IPV6:
