@@ -66,16 +66,19 @@ git clone https://github.com/RIOT-OS/RIOT.git
 ```
 [Jump to Index](#index)
 ## Clone/download our project repository<a name="project_repo"></a>
-First step,
+- First step,
 Clone/download our project repository using
 ```bash
 git clone https://github.com/zakilive/iot-cloud-riot.git
 ```
 
-Second step,
-Open the cloned repository, open `IOT_final_project` and copy `temperature_mqttsn` from there to Riot OS `example` folder then get inside the folder and flash it with nrf52840dk board
+- Second step,
+- Open the cloned project repository,
+- Inside `IOT_final_project` copy this `temperature_mqttsn` folder and paster it inside Riot OS `example` folder
 
-We need Makefile and main.c files together to run any RIOT application. `temperature_mqttsn` folder consists of this.
+We need Makefile and main.c files together to run any RIOT application. `temperature_mqttsn` folder have this both
+
+[For flashing check this sensor node section](#sensor_node)
 
 [Jump to Index](#index)
 ## Set up nrf52840dk Board(Sensor Node):<a name="sensor_node"></a>
@@ -207,7 +210,7 @@ Follow the steps below to build and run the GNRC Border Router Example:
    PREFIX_CONF := uhcp
     ```
 
-   this configuration file is also available in `utils/Gnrc_makefile`
+   this configuration file is also available in `utils/Gnrc_makefile` and can rename as Makefile
 
 5. Find the USB-port to which the dongle has been connected.
      ``` bash
