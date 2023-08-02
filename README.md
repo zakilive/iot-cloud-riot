@@ -433,8 +433,10 @@ Mysql usually installed and listening on port 3306 by default. It also needs to 
 Login to mysql after install from terminal:<a name="mysql_pass"></a>
 `sudo mysql`
 
+```
 username: root
 password: admin
+```
 
 mysql> `mysql -u root -p`
 
