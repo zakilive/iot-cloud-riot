@@ -76,9 +76,9 @@ git clone https://github.com/zakilive/iot-cloud-riot.git
 - Open the cloned project repository,
 - Inside `IOT_final_project` copy this `temperature_mqttsn` folder and paste it inside Riot OS `example` folder
 
-We need Makefile and main.c files together to flash any RIOT application. `temperature_mqttsn` folder have this both
+We need Makefile and main.c files together to flash any RIOT application. `temperature_mqttsn` folder have this both. It is our sensor node application.
 
-[For flashing check this sensor node section](#sensor_node_flash)
+[For flashing it inside nrf52840dk check this sensor node section](#sensor_node_flash)
 
 [Jump to Index](#index)
 ## Set up nrf52840dk Board(Sensor Node):<a name="sensor_node"></a>
