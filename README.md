@@ -24,7 +24,7 @@ Authors: Linta Joseph (1474363), Syed Ahmed Zaki(1322363)
 
 For conducting this research project Oracle VirtualBox VM with UBUNTU OS, as well as Laptop with Ubuntu installed was used.
 
-The project is open source and free to contribute, replicate or distribute under LGPLv3 License.
+The project is open source and free to contribute under LGPLv3 License. If you got some help from our project please use this page as reference :)
 
 # Index: Steps to replicate this project:<a name="index"></a>
 Following these below 13 steps sequentially you can reproduce our project:
