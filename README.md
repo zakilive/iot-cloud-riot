@@ -254,13 +254,16 @@ Before you begin, make sure you have the following:
 10. Attach the Internet Gateway to your VPC.
 11. Go to **Route Tables** and configure the route to the Internet Gateway for IPv6 traffic.
 
+
+Tips: For setting up Step 1 and Step 2 , it is always better to check with latest AWS documentation.
+
 [Jump to Index](#index)
 ### Step 3: Launch EC2 Instance with IPv6
 
 1. Go to the AWS Management Console.
 2. Navigate to the **EC2 Dashboard**.
 3. Click on **Launch Instance**.
-4. Choose an **Amazon Machine Image (AMI)** for your EC2 instance.
+4. Choose an **UBUNTU** or any linux based image for your EC2 instance.
 5. Configure the instance details, including the VPC and subnet you created with IPv6 support.
 6. Click **Next: Add Storage** and configure storage settings as needed.
 7. Click **Next: Add Tags** and add any tags you want to associate with the instance.
@@ -298,6 +301,8 @@ EC2->Security Groups->sg-0d6bd7a320d9b311c-launch-wizard-4->Edit inbound rules
 Here are the some of security rules created for this project:
 <img src="project_screenshots/security1.jpeg" alt="Security rules"/>
 <img src="project_screenshots/security2.jpeg" alt="Security rules"/>
+
+In our project we used AWS learner academy account. So we needed to open the port ranges for inbound and outbound access. So even after defined in Securtity rules, if the mentioned port range does not work, then need to contact with the administration for opening the ports.
 
 [Jump to Index](#index)
 ### Execution of commands on EC2
